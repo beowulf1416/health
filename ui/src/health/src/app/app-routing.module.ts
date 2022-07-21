@@ -6,6 +6,7 @@ import { PatientComponent } from './components/patient/patient.component';
 
 const routes: Routes = [
   { path: 'user/login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule)},
+  { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
   { path: 'patient', component: PatientComponent },
   { path: 'patient-list', component: PatientListComponent },
   { path: '*', component: HomeComponent }
