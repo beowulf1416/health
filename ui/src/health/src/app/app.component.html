@@ -14,11 +14,14 @@
         <a mat-list-item routerLink=".">Item 3</a>
         <a mat-list-item routerLink=".">Item 4</a>
         <a mat-list-item routerLink=".">Item 5</a>
+        <a mat-list-item routerLink="/user/login">Login</a>
+        <a mat-list-item routerLink="/patient">Patient</a>
+        <a mat-list-item routerLink="/patient-list">Patients</a>
       </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <p>Content Content Content Content Content </p>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div><!-- .app-container -->

@@ -6,10 +6,16 @@ import { MaterialModule } from 'src/material.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PatientComponent } from './components/patient/patient.component';
+import { PatientListComponent } from './components/patient-list/patient-list.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PatientComponent,
+    PatientListComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
