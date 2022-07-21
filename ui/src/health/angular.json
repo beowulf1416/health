@@ -19,7 +19,7 @@
           "options": {
             // "outputPath": "dist/health",
             "outputPath": "../../public/www/html/health",
-            "deleteOutputPath": true,
+            // "deleteOutputPath": true,
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -29,7 +29,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/themes.scss"
             ],
             "scripts": []
           },
