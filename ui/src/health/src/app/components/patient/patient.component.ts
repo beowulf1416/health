@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-patient',
@@ -14,7 +15,11 @@ export class PatientComponent implements OnInit {
     honorificSuffix: 'not set'
   };
 
-  constructor() { }
+  constructor(
+    private title: TitleService
+  ) {
+    this.title.set_title('Patient');
+  }
 
   ngOnInit(): void {
   }
