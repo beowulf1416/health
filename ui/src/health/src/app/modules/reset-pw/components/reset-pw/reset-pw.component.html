@@ -1,0 +1,27 @@
+<div class="wrapper-reset-pw">
+    <form>
+        <fieldset>
+            <div class="wrapper-field">
+                <label for="pw">Password</label>
+                <input type="password" id="pw" name="pw" class="field-pw" required />
+                <div class="field-errors">
+                    <span>Password cannot be empty</span>
+                    <span>Password must contain at least 2 uppercase characters</span>
+                    <span>Password must contain at least 2 numeric characters</span>
+                    <span>Password must contain at least 2 special characters</span>
+                    <span>Password must be at least 8 characters</span>
+                </div><!-- .field-errors -->
+            </div><!-- .wrapper-field -->
+            <div class="wrapper-field">
+                <label for="confirm_pw">Confirm Password</label>
+                <input type="password" id="confirm_pw" name="confirm_pw" class="field-confirm-pw" required />
+                <div class="field-errors">
+                    <span>Passwords do not match</span>
+                </div>
+            </div><!-- .wrapper-field -->
+        </fieldset>
+        <fieldset>
+            <button type="submit">Reset Password</button>
+        </fieldset>
+    </form>
+</div><!-- .wrapper-reset-pw -->

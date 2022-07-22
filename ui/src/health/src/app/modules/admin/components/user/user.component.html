@@ -1,1 +1,29 @@
-<p>user works!</p>
+<div class="wrapper-user">
+    <form>
+        <fieldset>
+            <legend>Login Information</legend>
+            <div class="wrapper-field">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="field-email" required />
+                <div class="field-errors">
+                    <span>Email address cannot be empty</span>
+                    <span>The email address is not valid</span>
+                </div><!-- .field-errors -->
+            </div><!-- .wrapper-field -->
+        </fieldset>
+        <fieldset>
+            <legend>Personal Information</legend>
+            <div class="wrapper-field">
+                <label for="given_name">Given Name</label>
+                <input type="text" id="given_name" name="given_name" class="field-given-name" required />
+            </div><!-- .wrapper-field -->
+            <div class="wrapper-field">
+                <label for="family_name">Family Name</label>
+                <input type="text" id="family_name" name="family_name" class="field-family-name" required />
+            </div><!-- .wrapper-field -->
+        </fieldset>
+        <fieldset>
+            <button type="submit">Save</button>
+        </fieldset>
+    </form>
+</div><!-- .wrapper-user -->
