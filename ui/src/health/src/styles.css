@@ -15,3 +15,11 @@ html, body {
 .app-container mat-sidenav-container {
     height: 100%;
 }
+
+.app-container .app-toolbar .spacer {
+    flex: 1 1 auto;
+}
+
+.app-container .app-sidenav-container {
+    padding: 10px;
+}
