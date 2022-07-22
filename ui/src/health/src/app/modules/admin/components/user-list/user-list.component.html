@@ -1,1 +1,41 @@
-<p>user-list works!</p>
+<div class="wrapper-user-list-component">
+    <div class="wrapper-user-list-table">
+        <table>
+            <caption>Users</caption>
+            <thead>
+                <td colspan="2">
+                    <a title="Add user" routerLink="/user/add">add</a>
+                </td>
+                <tr>
+                    <th>Actions</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Actions</th>
+                    <th>Name</th>
+                </tr>
+                <tr>
+                    <td class="pager">
+                        <a title="first" class="pager-first" href="">&gt;&gt;</a>
+                        <a title="previous" class="pager-prev" href="">&gt;</a>
+                        <span>1-50</span>
+                        <a title="next" class="pager-next" href="">&lt;</a>
+                        <a title="last" class="pager-last" href="">&lt;&lt;</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>
+                        <a title="View user" routerLink="/user/view">view</a>
+                        <a title="Edit user" routerLink="/user/edit">edit</a>
+                        <a title="Toggle user status" href="/user/toggle-status">active</a>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div><!-- .wrapper-user-list-table -->
+</div><!-- .wrapper-user-list -->
