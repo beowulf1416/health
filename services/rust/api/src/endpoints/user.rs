@@ -20,6 +20,8 @@ use serde::{
     Deserialize
 };
 
+// use jwt::JWT;
+
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LoginRequest {
@@ -45,6 +47,11 @@ pub async fn login_post(
     info!("login_post()");
 
     debug!("user: {:?}", params);
+
+    let email = params.email.clone();
+    let pw = params.password.clone();
+
+    
 
     return HttpResponse::Ok()
         .json(ApiResponse {

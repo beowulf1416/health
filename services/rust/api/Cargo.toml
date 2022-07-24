@@ -16,3 +16,6 @@ serde_json = "1.0"
 http = "*"
 actix-web = { version = "4", features = ["rustls"] }
 actix-http = "*"
+
+jwt = { path = "../utils/jwt" }
+postgres = { path = "../data/postgres" }
