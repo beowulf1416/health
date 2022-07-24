@@ -26,13 +26,13 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 
 
 pub async fn status_get() -> impl Responder {
-    info!("status()");
+    info!("status_get()");
     return HttpResponse::Ok().body("Service is up. version: 1.0.0.0.dev");
 }
 
 
 pub async fn status_post() -> impl Responder {
-    info!("status()");
+    info!("status_post()");
     return HttpResponse::Ok()
         .json(ApiResponse {
             status: ApiResponseStatus::Success,

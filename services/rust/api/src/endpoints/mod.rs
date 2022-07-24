@@ -1,13 +1,14 @@
 pub mod status;
+pub mod user;
 
-use log::{
-    info
-};
+// use log::{
+//     info
+// };
 
-use actix_web::{
-    HttpResponse, 
-    Responder 
-};
+// use actix_web::{
+//     HttpResponse, 
+//     Responder 
+// };
 
 use serde::{
     Serialize,

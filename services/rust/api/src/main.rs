@@ -1,5 +1,6 @@
 extern crate log;
 
+mod middleware;
 mod endpoints;
 
 use log::{ 
@@ -10,8 +11,8 @@ use actix_web::{
     HttpServer, 
     App, 
     web, 
-    HttpResponse, 
-    Responder 
+    // HttpResponse, 
+    // Responder 
 };
 
 
@@ -34,7 +35,9 @@ async fn main() -> std::io::Result<()> {
             // .service(web::scope("/tenants").configure(crate::endpoints::tenants::config))
             // .service(web::scope("/admin/tenants").configure(crate::endpoints::tenant::admin::config))
             // .route("/status", web::get().to(crate::endpoints::status_get))
-            .service(web::scope("/api/status").configure(crate::endpoints::status::config))
+            .wrap(crate::middleware::cors::CORS::new())
+            .service(web::scope("/status").configure(crate::endpoints::status::config))
+            .service(web::scope("/user").configure(crate::endpoints::user::config))
     })
     .bind("0.0.0.0:8081")?
     .run();
