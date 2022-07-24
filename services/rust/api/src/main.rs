@@ -33,7 +33,8 @@ async fn main() -> std::io::Result<()> {
             // .service(web::scope("/user").configure(crate::endpoints::user::config))
             // .service(web::scope("/tenants").configure(crate::endpoints::tenants::config))
             // .service(web::scope("/admin/tenants").configure(crate::endpoints::tenant::admin::config))
-            .route("/status", web::get().to(crate::endpoints::status))
+            // .route("/status", web::get().to(crate::endpoints::status_get))
+            .service(web::scope("/api/status").configure(crate::endpoints::status::config))
     })
     .bind("0.0.0.0:8081")?
     .run();

@@ -1,3 +1,5 @@
+pub mod status;
+
 use log::{
     info
 };
@@ -7,8 +9,27 @@ use actix_web::{
     Responder 
 };
 
+use serde::{
+    Serialize,
+    Deserialize
+};
 
-pub async fn status() -> impl Responder {
-    info!("status()");
-    return HttpResponse::Ok().body("Status");
+use serde_json::Value;
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum ApiResponseStatus {
+    #[serde(rename="success")]
+    Success,
+    #[serde(rename="error")]
+    Error
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ApiResponse {
+    pub status: ApiResponseStatus,
+    pub message: String,
+    pub data: Option<Value>
+}
+
+
