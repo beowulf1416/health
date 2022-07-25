@@ -18,7 +18,7 @@ export class LoginService {
     password: String
   ) {
     this.http.post<ApiResponse>(
-      environment.url_authenticate,
+      environment.url_base + environment.url_authenticate,
       {
         email: email,
         password: password

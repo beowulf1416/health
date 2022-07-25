@@ -35,5 +35,17 @@ export class LoginComponent implements OnInit {
 
   submit() {
     console.log('LoginComponent::authenticate()');
+    
+    if (this.loginForm.valid) {
+      const email = this.loginForm.get("email")?.value;
+      const pw = this.loginForm.get("pw")?.value;
+
+      if (email != null && pw != null) {
+        const result = this.login.authenticate(email, pw);
+        console.log(result);
+      }
+    } else {
+      console.log("form invalid");
+    }
   }
 }
