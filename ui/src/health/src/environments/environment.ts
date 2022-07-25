@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  key_session_token: 'token'
+  key_session_token: 'token',
+  url_authenticate: '/api/user/authenticate'
 };
 
 /*

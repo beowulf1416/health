@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Validator } from 'src/app/classes/validator';
 import { TitleService } from 'src/app/services/title.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    private title: TitleService
+    private title: TitleService,
+    private login: LoginService
   ) {
     this.title.set_title('Login');
   }
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
-    console.log('LoginComponent::login()');
+  submit() {
+    console.log('LoginComponent::authenticate()');
   }
 }
