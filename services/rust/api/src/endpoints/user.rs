@@ -10,10 +10,7 @@ use actix_web::{
     web
 };
 
-use crate::endpoints::{
-    ApiResponse,
-    ApiResponseStatus
-};
+use http::header::AUTHORIZATION;
 
 use serde::{
     Serialize,
@@ -21,6 +18,16 @@ use serde::{
 };
 
 use jwt::JWT;
+
+use postgres::{ 
+    Db,
+    users::Users
+};
+
+use crate::endpoints::{
+    ApiResponse,
+    ApiResponseStatus
+};
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,21 +50,54 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 pub async fn login_post(
     request: HttpRequest,
     jwt: web::Data<JWT>,
+    db: web::Data<Db>,
     params: web::Json<LoginRequest>
 ) -> impl Responder {
     info!("login_post()");
 
-    // debug!("user: {:?}", params);
-
     let email = params.email.clone();
     let pw = params.password.clone();
 
-    
-
-    return HttpResponse::Ok()
-        .json(ApiResponse {
-            status: ApiResponseStatus::Success,
-            message: String::from("login success"),
-            data: None
-        });
+    if let Ok(client) = db.pool().get().await {
+        let users = Users::new(client);
+        let authentic = users.authenticate(
+            &email,
+            &pw
+        ).await;
+        if authentic {
+            if let Ok(token) = jwt.generate(
+                &email
+            ) {
+                // return authorization header
+                return HttpResponse::Ok()
+                    .append_header((AUTHORIZATION, format!("Bearer {}", token)))
+                    .json(ApiResponse {
+                        status: ApiResponseStatus::Success,
+                        message: String::from("login success"),
+                        data: None
+                    });
+            } else {
+                return HttpResponse::Ok()
+                    .json(ApiResponse {
+                        status: ApiResponseStatus::Fail,
+                        message: String::from("login failed"),
+                        data: None
+                    });
+            }
+        } else {
+            return HttpResponse::Ok()
+                .json(ApiResponse {
+                    status: ApiResponseStatus::Fail,
+                    message: String::from("login failed"),
+                    data: None
+                });
+        }
+    } else {
+        return HttpResponse::InternalServerError()
+            .json(ApiResponse {
+                status: ApiResponseStatus::Error,
+                message: String::from("login error"),
+                data: None
+            });
+    }
 }

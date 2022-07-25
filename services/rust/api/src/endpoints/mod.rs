@@ -22,6 +22,8 @@ use serde_json::Value;
 pub enum ApiResponseStatus {
     #[serde(rename="success")]
     Success,
+    #[serde(rename="fail")]
+    Fail,
     #[serde(rename="error")]
     Error
 }

@@ -14,8 +14,11 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             if url_db == "" {
                 error!("database connection configuration not set in {}", url_db_file);
             } else {
-                let db = postgres::Db::new(url_db.clone());
-                cfg.app_data(web::Data::new(db.clone()));
+                if let Ok(db) = postgres::Db::new(url_db.clone()) {
+                    cfg.app_data(web::Data::new(db.clone()));
+                } else {
+                    error!("unable to create database connection");
+                }
             }
         } else {
             error!("unable to read database connection configuration from {}", url_db_file);

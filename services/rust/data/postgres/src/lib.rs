@@ -1,3 +1,6 @@
+pub mod users;
+
+
 use log::{
     error
 };
@@ -53,6 +56,10 @@ impl Db {
                 return Err(format!("unable to parse database connection string"));
             }
         }
+    }
+
+    pub fn pool(&self) -> Pool {
+        return self.pool.clone();
     }
 }
 
