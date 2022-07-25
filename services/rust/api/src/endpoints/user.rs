@@ -20,7 +20,7 @@ use serde::{
     Deserialize
 };
 
-// use jwt::JWT;
+use jwt::JWT;
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -42,11 +42,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 
 pub async fn login_post(
     request: HttpRequest,
+    jwt: web::Data<JWT>,
     params: web::Json<LoginRequest>
 ) -> impl Responder {
     info!("login_post()");
 
-    debug!("user: {:?}", params);
+    // debug!("user: {:?}", params);
 
     let email = params.email.clone();
     let pw = params.password.clone();
