@@ -1,6 +1,6 @@
 <div class="container-app">
   <mat-toolbar color="primary" class="app-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
+    <button mat-icon-button (click)="$nav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="app-name">Admin</h1>
@@ -37,8 +37,8 @@
     </mat-menu>
   </mat-toolbar>
 
-  <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav #snav>
+  <mat-sidenav-container class="container-app-sidenav">
+    <mat-sidenav #$nav>
       <mat-nav-list>
         <a mat-list-item routerLink="/user/login">Login</a>
         <a mat-list-item routerLink="/user/reset-pw">Reset Password</a>
@@ -57,7 +57,7 @@
           </mat-expansion-panel-header>
 
           <mat-nav-list>
-            <a mat-list-item routerLink="/domain">Domains</a>
+            <a mat-list-item routerLink="/domains">Domains</a>
           </mat-nav-list>
 
         </mat-expansion-panel>
