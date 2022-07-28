@@ -5,6 +5,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 
 const routes: Routes = [
   {
+    path: 'user/login',
+    loadChildren: () => import('./modules/login/login.module').then( m => m.LoginModule)
+  },
+  {
     path: 'domains',
     loadChildren: () => import('./modules/domains/domains.module').then( m => m.DomainsModule)
   },

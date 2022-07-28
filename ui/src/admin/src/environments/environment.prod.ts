@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+
+  key_session_token: 'token'
 };
