@@ -2,3 +2,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.container-app {
+    height: 100%;
+}
+
+.container-app mat-sidenav-container {
+    height: 100%;
+}
+
+
+.container-app .spacer {
+    flex: 1 1 auto;
+}
