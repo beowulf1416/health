@@ -9,7 +9,11 @@ const routes: Routes = [
     component: UsersListComponent
   },
   {
-    path: 'view',
+    path: 'new',
+    component: UsersComponent
+  },
+  {
+    path: 'view/:user_slug',
     component: UsersComponent
   }
 ];

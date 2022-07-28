@@ -1,16 +1,30 @@
 <div class="component-user">
     <div class="wrapper-form">
-        <form>
+        <form id="form-user" [formGroup]="userForm" (ngSubmit)="submit()">
             <fieldset>
                 <legend>Information</legend>
                 <div class="wrapper-field">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" class="field-name" required />
+                    <label for="given_name">Given Name</label>
+                    <input type="text" id="given_name" name="given_name" class="field-given-name" required formControlName="given_name" />
+                </div><!-- .wrapper-field -->
+                <div class="wrapper-field">
+                    <label for="family_name">Family Name</label>
+                    <input type="text" id="family_name" name="family_name" class="field-family-name" required formControlName="family_name"/>
                 </div><!-- .wrapper-field -->
                 <div class="wrapper-field">
                     <label for="slug">Slug</label>
-                    <input type="text" id="slug" name="slug" class="field-slug" required />
+                    <input type="text" id="slug" name="slug" class="field-slug" required formControlName="slug"/>
                 </div><!-- .wrapper-field -->
+            </fieldset>
+            <fieldset>
+                <legend>Contact Information</legend>
+                <div class="wrapper-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="field-email" required formControlName="email" />
+                </div><!-- .wrapper-field -->
+            </fieldset>
+            <fieldset>
+                <button type="submit">save</button>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->
