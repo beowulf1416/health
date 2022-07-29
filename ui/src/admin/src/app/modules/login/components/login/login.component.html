@@ -1,15 +1,28 @@
 <div class="component-login">
     <div class="wrapper-form">
-        <form>
+        <form class="form-login" [formGroup]="loginForm" (ngSubmit)="submit()">
             <fieldset>
-                <div class="wrapper-field">
-                    <label for="email">email</label>
-                    <input type="email" id="email" name="email" class="field-email" required />
-                </div><!-- .wrapper-field -->
-                <div class="wrapper-field">
-                    <label for="pw">password</label>
-                    <input type="password" id="pw" name="pw" class="field-pw" required />
-                </div><!-- .wrapper-field -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" id="email" name="email" class="field-email" placeholder="Email Address" required matInput >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter email address</mat-hint>
+                    <div class="field-errors">
+                        <mat-error *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)">
+                            Please enter a valid email address
+                        </mat-error>
+                    </div>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input type="password" id="pw" name="pw" class="field-pw" placeholder="Password" required matInput >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter password</mat-hint>
+                </mat-form-field>
+            </fieldset>
+            <fieldset>
+                <button mat-raised-button color="primary">Log In</button>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->
