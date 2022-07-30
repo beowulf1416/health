@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TitleService } from 'src/app/services/title.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    private title: TitleService
+    private title: TitleService,
+    private user: UserService
   ) {
     title.set_title('Login');
   }
@@ -32,7 +34,18 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('email');
   }
 
+  get password() {
+    return this.loginForm.get('pw');
+  }
+
   submit() {
     console.log('LoginComponent::submit()');
+
+    if (this.loginForm.valid) {
+      this.user.authenticate(
+        this.loginForm.get('email')?.value || '',
+        this.loginForm.get('pw')?.value || ''
+      );
+    }
   }
 }
