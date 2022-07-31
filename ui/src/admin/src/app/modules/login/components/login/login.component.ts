@@ -45,7 +45,9 @@ export class LoginComponent implements OnInit {
       this.user.authenticate(
         this.loginForm.get('email')?.value || '',
         this.loginForm.get('pw')?.value || ''
-      );
+      ).subscribe(r => {
+        console.log(r);
+      });
     }
   }
 }
