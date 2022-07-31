@@ -22,7 +22,7 @@ export class UserService {
     password: string
   ): Observable<boolean> {
     console.log('UserService::authenticate()');
-    return this.http.post<boolean>(
+    return this.http.post<ApiResponse>(
       environment.url_base + environment.path_authenticate,
       {
         email: email,
@@ -32,22 +32,34 @@ export class UserService {
         observe: 'response'
       }
     ).pipe(
-      // tap(r => {
-      //   if (r.headers.has('authorization')) {
-      //     const header_value = r.headers.get('authorization');
-      //     if (header_value != null) {
-      //       const token = header_value.replace('Bearer ', '');
-      //       sessionStorage.setItem(environment.key_session_token, token);
-      //     }
-      //   }
-      // }),
+      tap(r => {
+        if (r.headers.has('authorization')) {
+          const header_value = r.headers.get('authorization');
+          if (header_value != null) {
+            const token = header_value.replace('Bearer ', '');
+            console.log(token);
+            // sessionStorage.setItem(environment.key_session_token, token);
+          }
+        }
+      }),
       // catchError( e => {
       //   console.error(e);
       //   return of(false);
       // })
       map(r => {
-        console.log(r);
-        return true;
+        if (r.ok) {
+          const api_response = r.body;
+          if(api_response?.status == 'success') {
+            console.log(api_response?.message);
+            return true;
+          } else {
+            console.error(api_response?.message);
+            return false;
+          }
+        } else {
+          console.error(r);
+          return false;
+        }
       })
     );
   }
