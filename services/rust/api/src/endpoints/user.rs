@@ -26,7 +26,8 @@ use postgres::{
 
 use crate::endpoints::{
     ApiResponse,
-    ApiResponseStatus
+    ApiResponseStatus,
+    api_options
 };
 
 
@@ -40,20 +41,28 @@ pub struct LoginRequest {
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
-            web::resource("login")
-                .route(web::post().to(login_post))
+            web::resource("authenticate")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(authenticate_get))
+                .route(web::post().to(authenticate_post))
         )
     ;
 }
 
 
-pub async fn login_post(
+pub async fn authenticate_get() -> impl Responder {
+    info!("authenticate_get()");
+    return HttpResponse::Ok().body("use POST /authenticate instead");
+}
+
+
+pub async fn authenticate_post(
     request: HttpRequest,
     jwt: web::Data<JWT>,
     db: web::Data<Db>,
     params: web::Json<LoginRequest>
 ) -> impl Responder {
-    info!("login_post()");
+    info!("authenticate_post()");
 
     let email = params.email.clone();
     let pw = params.password.clone();

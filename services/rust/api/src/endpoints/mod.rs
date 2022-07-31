@@ -1,14 +1,14 @@
 pub mod status;
 pub mod user;
 
-// use log::{
-//     info
-// };
+use log::{
+    info
+};
 
-// use actix_web::{
-//     HttpResponse, 
-//     Responder 
-// };
+use actix_web::{
+    HttpResponse, 
+    Responder 
+};
 
 use serde::{
     Serialize,
@@ -35,4 +35,8 @@ pub struct ApiResponse {
     pub data: Option<Value>
 }
 
+
+pub async fn api_options() -> impl Responder {
+    return HttpResponse::Ok();
+}
 

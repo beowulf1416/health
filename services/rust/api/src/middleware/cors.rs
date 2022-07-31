@@ -1,7 +1,7 @@
-// use log::{
-//     info,
-//     debug
-// };
+use log::{
+    // info,
+    debug
+};
 
 use std::task::{ Context, Poll };
 use std::future::{ ready, Ready };
@@ -80,7 +80,6 @@ where
     }
 
     fn call(&self, request: ServiceRequest) -> Self::Future {
-
         let origin = HeaderValue::from_static("*");
         let fut = self.service.call(request);
 
