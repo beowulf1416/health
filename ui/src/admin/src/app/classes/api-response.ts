@@ -7,7 +7,7 @@
 // }
 
 export interface ApiResponse {
-    status: string;
+    status: boolean;
     message: string;
     data: JSON | null
 }

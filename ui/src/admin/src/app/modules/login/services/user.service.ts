@@ -49,7 +49,7 @@ export class UserService {
       map(r => {
         if (r.ok) {
           const api_response = r.body;
-          if(api_response?.status == 'success') {
+          if(api_response?.status) {
             console.log(api_response?.message);
             return true;
           } else {

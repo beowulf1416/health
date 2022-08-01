@@ -46,7 +46,11 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('email')?.value || '',
         this.loginForm.get('pw')?.value || ''
       ).subscribe(r => {
-        console.log(r);
+        if (r) {
+
+        } else {
+
+        }
       });
     }
   }
