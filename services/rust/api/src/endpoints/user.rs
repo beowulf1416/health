@@ -26,7 +26,7 @@ use postgres::{
 
 use crate::endpoints::{
     ApiResponse,
-    ApiResponseStatus,
+    // ApiResponseStatus,
     api_options
 };
 
@@ -81,14 +81,14 @@ pub async fn authenticate_post(
                 return HttpResponse::Ok()
                     .append_header((AUTHORIZATION, format!("Bearer {}", token)))
                     .json(ApiResponse {
-                        status: ApiResponseStatus::Success,
+                        success: true,
                         message: String::from("login success"),
                         data: None
                     });
             } else {
                 return HttpResponse::Ok()
                     .json(ApiResponse {
-                        status: ApiResponseStatus::Fail,
+                        success: false,
                         message: String::from("login failed"),
                         data: None
                     });
@@ -96,7 +96,7 @@ pub async fn authenticate_post(
         } else {
             return HttpResponse::Ok()
                 .json(ApiResponse {
-                    status: ApiResponseStatus::Fail,
+                    success: false,
                     message: String::from("login failed"),
                     data: None
                 });
@@ -104,7 +104,7 @@ pub async fn authenticate_post(
     } else {
         return HttpResponse::InternalServerError()
             .json(ApiResponse {
-                status: ApiResponseStatus::Error,
+                success: false,
                 message: String::from("login error"),
                 data: None
             });

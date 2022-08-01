@@ -18,19 +18,19 @@ use serde::{
 use serde_json::Value;
 
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum ApiResponseStatus {
-    #[serde(rename="success")]
-    Success,
-    #[serde(rename="fail")]
-    Fail,
-    #[serde(rename="error")]
-    Error
-}
+// #[derive(Debug, Serialize, Deserialize)]
+// pub enum ApiResponseStatus {
+//     #[serde(rename="success")]
+//     Success,
+//     #[serde(rename="fail")]
+//     Fail,
+//     #[serde(rename="error")]
+//     Error
+// }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ApiResponse {
-    pub status: ApiResponseStatus,
+    pub success: bool,
     pub message: String,
     pub data: Option<Value>
 }

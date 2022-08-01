@@ -46,13 +46,13 @@ impl Db {
                             });
                         }
                         Err(e) => {
-                            error!("unable to create database connection pool");
+                            error!("unable to create database connection pool: {:?}", e);
                             return Err(format!("unable to create database connection pool"));
                         }
                     }
             }
             Err(e) => {
-                error!("unable to parse database connection string");
+                error!("unable to parse database connection string: {:?}", e);
                 return Err(format!("unable to parse database connection string"));
             }
         }

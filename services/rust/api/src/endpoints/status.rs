@@ -10,7 +10,7 @@ use actix_web::{
 
 use crate::endpoints::{
     ApiResponse,
-    ApiResponseStatus
+    // ApiResponseStatus
 };
 
 
@@ -35,7 +35,7 @@ pub async fn status_post() -> impl Responder {
     info!("status_post()");
     return HttpResponse::Ok()
         .json(ApiResponse {
-            status: ApiResponseStatus::Success,
+            success: false,
             message: String::from("Service is up. version: 1.0.0.0.dev"),
             data: None
         });
