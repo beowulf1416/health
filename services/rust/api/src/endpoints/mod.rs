@@ -1,4 +1,5 @@
 pub mod status;
+pub mod domain;
 pub mod user;
 
 use log::{
