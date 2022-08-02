@@ -3,6 +3,3 @@ set schema 'domain';
 
 -- tables
 \ir tables/domains.sql
-
-
--- procs
