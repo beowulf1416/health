@@ -14,3 +14,5 @@ tokio-postgres = { version = "0.7", features = ["with-uuid-0_8"] }
 postgres-types = { version = "*", features = ["derive"] }
 
 actix-web = { version = "4", features = ["rustls"] }
+
+uuid = { version = "0.8.2", features = ["v4", "serde"] }

@@ -38,6 +38,17 @@ pub struct LoginRequest {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UserAddRequest {
+    pub email: String,
+    pub password: String,
+    pub given_name: String,
+    pub family_name: String,
+    pub prefix: String,
+    pub suffix: String
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
@@ -50,13 +61,13 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 }
 
 
-pub async fn authenticate_get() -> impl Responder {
+async fn authenticate_get() -> impl Responder {
     info!("authenticate_get()");
     return HttpResponse::Ok().body("use POST /authenticate instead");
 }
 
 
-pub async fn authenticate_post(
+async fn authenticate_post(
     request: HttpRequest,
     jwt: web::Data<JWT>,
     db: web::Data<Db>,
@@ -110,3 +121,28 @@ pub async fn authenticate_post(
             });
     }
 }
+
+
+async fn user_add_get() -> impl Responder {
+    info!("user_add_get()");
+    return HttpResponse::Ok().body("use POST /add instead");
+}
+
+async fn user_add_post(
+    request: HttpRequest,
+    jwt: web::Data<JWT>,
+    db: web::Data<Db>,
+    params: web::Json<UserAddRequest>
+) -> impl Responder {
+    info!("user_add_post()");
+
+    let email = params.email.clone();
+    let pw = params.password.clone();
+    let given_name = params.given_name.clone();
+    let family_name = params.family_name.clone();
+    let prefix = params.prefix.clone();
+    let suffix = params.suffix.clone();
+    
+    return HttpResponse::Ok().body("// TODO user_add_post()");
+}
+
