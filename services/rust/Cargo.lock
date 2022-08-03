@@ -1017,6 +1017,7 @@ dependencies = [
  "deadpool-postgres",
  "log",
  "postgres-types",
+ "serde",
  "tokio-postgres",
  "uuid",
 ]
