@@ -2,3 +2,9 @@ curl -i -X POST \
 -H "Content-Type: application/json" \
 -d '{ "email": "test@test.com", "password": "test" }' \
 http://localhost:8081/user/authenticate 
+
+
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ "id": "e27aa87c-a018-45a0-8037-bec2c1c338b1", "name": "test", "slug": "test" }' \
+http://localhost:8081/domain/add 

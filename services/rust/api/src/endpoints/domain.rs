@@ -1,6 +1,7 @@
 use log::{
     info,
-    debug
+    debug,
+    error
 };
 
 use actix_web::{
@@ -21,7 +22,7 @@ use jwt::JWT;
 
 use postgres::{ 
     Db,
-    domain::Domains
+    domains::Domains
 };
 
 use crate::endpoints::{
@@ -68,37 +69,42 @@ async fn domain_add_post(
     let name = params.name.clone();
     let slug = params.slug.clone();
 
-    if let Ok(client) = db.pool().get().await {
-        let domains = Domains::new(client);
-        match domains.domain_add(
-            id,
-            name,
-            slug
-        ).await {
-            Err(e) => {
-                error!("unable to add domain record: {:?}", e);
-                return HttpResponse::InternalServerError()
-                    .json(ApiResponse {
-                        success: false,
-                        message: String::from("// TODO domain add error"),
-                        data: None
-                    });
-            }
-            Ok(_) => {
-                return HttpResponse::Ok()
-                    .json(ApiResponse {
-                        success: true,
-                        message: String::from("added domain record"),
-                        data: None
-                    });
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client: {:?}", e);
+
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO domain add error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let domains = Domains::new(client);
+            match domains.add(
+                &id,
+                &name,
+                &slug
+            ).await {
+                Err(e) => {
+                    error!("unable to add domain record: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO domain add error"),
+                            data: None
+                        });
+                }
+                Ok(_) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("added domain record"),
+                            data: None
+                        });
+                }
             }
         }
-    } else {
-        return HttpResponse::InternalServerError()
-            .json(ApiResponse {
-                success: false,
-                message: String::from("// TODO domain add error"),
-                data: None
-            });
     }
 }

@@ -256,6 +256,7 @@ dependencies = [
  "postgres",
  "serde",
  "serde_json",
+ "uuid",
 ]
 
 [[package]]
