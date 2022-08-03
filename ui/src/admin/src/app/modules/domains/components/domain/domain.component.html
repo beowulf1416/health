@@ -1,17 +1,43 @@
 <div class="component-domain">
     <div class="wrapper-form">
-        <form>
+        <form class="form-domain" [formGroup]="domainForm" (ngSubmit)="submit()">
             <fieldset>
                 <legend>Information</legend>
-                <div class="wrapper-field">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" class="field-name" required />
-                </div><!-- .wrapper-field -->
-                <div class="wrapper-field">
-                    <label for="slug">Slug</label>
-                    <input type="text" id="slug" name="slug" class="field-slug" required />
-                </div><!-- .wrapper-field -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input type="text" id="name" name="name" class="field-name" required matInput formControlName="name" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter domain name</mat-hint>
+                    <div class="field-errors" *ngIf="name?.touched || name?.dirty">
+                        <mat-error *ngIf="name?.hasError('required')">
+                            Please enter domain name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Slug</mat-label>
+                    <input type="text" id="slug" name="slug" class="field-slug" required matInput formControlName="slug" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter domain slug</mat-hint>
+                    <div class="field-errors" *ngIf="slug?.touched || slug?.dirty">
+                        <mat-error *ngIf="slug?.hasError('required')">
+                            Please enter domain slug
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Slug</mat-label>
+                    <input type="radio" id="active" name="active" class="field-active" matInput formControlName="active" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>set domain active status</mat-hint>
+                    <div class="field-errors" *ngIf="active?.touched || active?.dirty">
+                        <mat-error *ngIf="active?.hasError('required')">
+                            Please set domain active status
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
             </fieldset>
+            <button type="submit">Save</button>
         </form>
     </div><!-- .wrapper-form -->
 </div><!-- .component-domain -->

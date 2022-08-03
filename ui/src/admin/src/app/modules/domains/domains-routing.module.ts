@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'view',
     component: DomainComponent
+  },
+  {
+    path: 'add',
+    component: DomainComponent
   }
 ];
 
