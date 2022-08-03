@@ -1,7 +1,7 @@
 create or replace function domain_list (
     p_filter domain.domains.name%type default '',
     p_items int default 10,
-    p_page int default 1
+    p_page int default 0
 )
 returns table (
     id domain.domains.id%type,
