@@ -160,4 +160,70 @@ impl Domains {
             }
         }
     }
+
+
+    pub async toggle_active(
+        &self,
+        id: &uuid::Uuid,
+        active: &bool
+    ) -> Result<(), String> {
+        let query = "call domain.domain_active_toggle($1, $2);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to prepare statement"));
+            }
+            Ok(stmt) => {
+                match self.client.execute(
+                    &stmt,
+                    &[
+                        &id,
+                        &active
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("unable to toggle domain active status : {:?}", e);
+                        return Err(String::from("unable to toggle domain active status"));
+                    }
+                    Ok(_rows_modified) => {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+    }
+
+
+    pub async fn update(
+        &self,
+        id: &uuid::Uuid,
+        name: &String,
+        slug: &String
+    ) -> Result<(), String> {
+        let query = "call domain.domain_update($1, $2, $3);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to prepare statement"));
+            }
+            Ok(stmt) => {
+                match self.client.execute(
+                    &stmt,
+                    &[
+                        &id,
+                        &active
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("unable to update domain: {:?}", e);
+                        return Err(String::from("unable to update domain"));
+                    }
+                    Ok(_rows_modified) => {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+
+    }
 }

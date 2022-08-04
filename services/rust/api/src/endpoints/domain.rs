@@ -54,6 +54,21 @@ struct DomainGetRequest {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+struct DomainToggleActiveRequest {
+    pub id: uuid::Uuid,
+    pub active: bool
+}
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DomainUpdateRequest {
+    pub id: uuid::Uuid,
+    pub name: String,
+    pub slug: String
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
@@ -73,6 +88,18 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(domain_get_get))
                 .route(web::post().to(domain_get_post))
+        )
+        .service(
+            web::resource("toggle/active")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(domain_toggle_active_get))
+                .route(web::post().to(domain_toggle_active_post))
+        )
+        .service(
+            web::resource("update")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(domain_update_get))
+                .route(web::post().to(domain_update_post))
         )
     ;
 }
@@ -250,4 +277,123 @@ async fn domain_get_post(
             }
         }
     }
+}
+
+
+async fn domain_toggle_active_get() -> impl Responder {
+    info!("domain_toggle_active_get()");
+    return HttpResponse::Ok().body("use POST /toggle/active instead");
+}
+
+
+async fn domain_toggle_active_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<DomainToggleActiveRequest>
+) -> impl Responder {
+    info!("domain_toggle_active_post()");
+
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to toggle domain active status: {:?}", e);
+
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO domain toggle active error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+            let active = params.active.clone();
+
+            let domains = Domains::new(client);
+            match domains.toggle_active(
+                &id,
+                &active
+            ).await {
+                Err(e) => {
+                    error!("unable to toggle domain active status {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO domain toggle active error"),
+                            data: None
+                        });
+                }
+                Ok(result) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO domain toggle active success"),
+                            data: Some(json!({
+                                "domain": result
+                            }))
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+async fn domain_update_get() -> impl Responder {
+    info!("domain_update_get()");
+    return HttpResponse::Ok().body("use POST /update instead");
+}
+
+
+async fn domain_update_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<DomainUpdateRequest>
+) -> impl Responder {
+    info!("domain_update_post()");
+
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to update domain: {:?}", e);
+
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO domain update error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+            let name = params.name.clone();
+            let slug = params.slug.clone();
+
+            let domains = Domains::new(client);
+            match domains.update(
+                &id,
+                &name,
+                &slug
+            ).await {
+                Err(e) => {
+                    error!("unable to update domain {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO domain update error"),
+                            data: None
+                        });
+                }
+                Ok(result) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO domain update success"),
+                            data: Some(json!({
+                                "domain": result
+                            }))
+                        });
+                }
+            }
+        }
+    }
+
 }
