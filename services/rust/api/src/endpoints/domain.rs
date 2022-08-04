@@ -48,6 +48,12 @@ struct DomainListRequest {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+struct DomainGetRequest {
+    pub id: uuid::Uuid
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
@@ -62,6 +68,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::get().to(domain_list_get))
                 .route(web::post().to(domain_list_post))
         )
+        .service(
+            web::resource("get")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(domain_get_get))
+                .route(web::post().to(domain_get_post))
+        )
     ;
 }
 
@@ -73,7 +85,7 @@ async fn domain_add_get() -> impl Responder {
 
 
 async fn domain_add_post(
-    request: HttpRequest,
+    _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<DomainAddRequest>
 
@@ -132,7 +144,7 @@ async fn domain_list_get() -> impl Responder {
 
 
 async fn domain_list_post(
-    request: HttpRequest,
+    _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<DomainListRequest>
 ) -> impl Responder {
@@ -176,6 +188,62 @@ async fn domain_list_post(
                             message: String::from("// TODO domain list success"),
                             data: Some(json!({
                                 "domains": result
+                            }))
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+async fn domain_get_get() -> impl Responder {
+    info!("domain_get_get()");
+    return HttpResponse::Ok().body("use POST /get instead");
+}
+
+
+async fn domain_get_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<DomainGetRequest>
+) -> impl Responder {
+    info!("domain_get_post()");
+
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client: {:?}", e);
+
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO domain get error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+
+            let domains = Domains::new(client);
+            match domains.get(
+                &id
+            ).await {
+                Err(e) => {
+                    error!("unable to list domains: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO domain get error"),
+                            data: None
+                        });
+                }
+                Ok(result) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO domain get success"),
+                            data: Some(json!({
+                                "domain": result
                             }))
                         });
                 }

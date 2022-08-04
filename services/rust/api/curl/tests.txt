@@ -12,5 +12,11 @@ http://localhost:8081/domain/add
 
 curl -i -X POST \
 -H "Content-Type: application/json" \
--d '{ "filter": "", "items": 10, "page": 1 }' \
+-d '{ "filter": "", "items": 10, "page": 0 }' \
 http://localhost:8081/domain/list 
+
+
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ "id": "e27aa87c-a018-45a0-8037-bec2c1c338b1" }' \
+http://localhost:8081/domain/get

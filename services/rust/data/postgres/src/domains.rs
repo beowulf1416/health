@@ -119,6 +119,45 @@ impl Domains {
                 return Ok(domains);
             }
         }
+    }
 
+
+    pub async fn get(
+        &self,
+        id: &uuid::Uuid
+    ) -> Result<Domain, String> {
+        let query = "select * from domain.domain_get($1);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to prepare statement"));
+            }
+            Ok(stmt) => {
+                match self.client.query_one(
+                    &stmt,
+                    &[
+                        &id
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("unable to retrieve domain : {:?}", e);
+                        return Err(String::from("unable to retrieve domain"));
+                    }
+                    Ok(row) => {
+                        let domain_id: uuid::Uuid = row.get("id");
+                        let active: bool = row.get("active");
+                        let name: String = row.get("name");
+                        let slug: String = row.get("slug");
+
+                        return Ok(Domain {
+                            id: domain_id,
+                            active: active,
+                            name: name,
+                            slug: slug
+                        });
+                    }
+                }
+            }
+        }
     }
 }
