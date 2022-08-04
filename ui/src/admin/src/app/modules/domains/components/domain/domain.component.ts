@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-domain',
@@ -18,7 +19,11 @@ export class DomainComponent implements OnInit {
     active: new FormControl('', [])
   });
 
-  constructor() { }
+  constructor(
+    private title: TitleService
+  ) { 
+    title.set_title('Domain');
+  }
 
   ngOnInit(): void {
   }

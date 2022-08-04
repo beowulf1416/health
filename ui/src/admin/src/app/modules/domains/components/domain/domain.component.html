@@ -25,19 +25,13 @@
                         </mat-error>
                     </div><!-- .field-errors -->
                 </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Slug</mat-label>
-                    <input type="radio" id="active" name="active" class="field-active" matInput formControlName="active" />
-                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                    <mat-hint>set domain active status</mat-hint>
-                    <div class="field-errors" *ngIf="active?.touched || active?.dirty">
-                        <mat-error *ngIf="active?.hasError('required')">
-                            Please set domain active status
-                        </mat-error>
-                    </div><!-- .field-errors -->
-                </mat-form-field>
+                <mat-slide-toggle
+                    class="example-margin"
+                    formControlName="active">
+                    Active
+                </mat-slide-toggle>
             </fieldset>
-            <button type="submit">Save</button>
+            <button mat-raised-button color="primary" [disabled]="domainForm.invalid" >Submit</button>
         </form>
     </div><!-- .wrapper-form -->
 </div><!-- .component-domain -->
