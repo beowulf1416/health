@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiResponse } from 'src/app/classes/api-response';
 import { TitleService } from 'src/app/services/title.service';
+import { DomainService } from '../../services/domain.service';
 
 @Component({
   selector: 'app-domain',
@@ -20,7 +22,8 @@ export class DomainComponent implements OnInit {
   });
 
   constructor(
-    private title: TitleService
+    private title: TitleService,
+    private domain_service: DomainService
   ) { 
     title.set_title('Domain');
   }
@@ -43,6 +46,13 @@ export class DomainComponent implements OnInit {
   submit() {
     console.log('DomainComponent::submit()');
 
-    
+    if (this.domainForm.valid) {
+      this.domain_service.add(
+        this.domainForm.get('name')?.value || '',
+        this.domainForm.get('slug')?.value || ''
+      ).subscribe((r: ApiResponse) => {
+        console.log(r);
+      });
+    }
   }
 }

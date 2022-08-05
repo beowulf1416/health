@@ -2,29 +2,64 @@
     <div class="wrapper-form">
         <form id="form-user" [formGroup]="userForm" (ngSubmit)="submit()">
             <fieldset>
-                <legend>Information</legend>
-                <div class="wrapper-field">
-                    <label for="given_name">Given Name</label>
-                    <input type="text" id="given_name" name="given_name" class="field-given-name" required formControlName="given_name" />
-                </div><!-- .wrapper-field -->
-                <div class="wrapper-field">
-                    <label for="family_name">Family Name</label>
-                    <input type="text" id="family_name" name="family_name" class="field-family-name" required formControlName="family_name"/>
-                </div><!-- .wrapper-field -->
-                <div class="wrapper-field">
-                    <label for="slug">Slug</label>
-                    <input type="text" id="slug" name="slug" class="field-slug" required formControlName="slug"/>
-                </div><!-- .wrapper-field -->
+                <legend>Required Information</legend>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Given Name</mat-label>
+                    <input type="text" id="given_name" name="given_name" class="field-given-name" placeholder="Given Name" required matInput formControlName="given_name" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter given name</mat-hint>
+                    <div class="field-errors" *ngIf="given_name?.touched || given_name?.dirty">
+                        <mat-error *ngIf="given_name?.hasError('required')">
+                            Please enter given name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Given Name</mat-label>
+                    <input type="text" id="family_name" name="family_name" class="field-family-name" placeholder="Family Name" required matInput formControlName="family_name" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter family name</mat-hint>
+                    <div class="field-errors" *ngIf="family_name?.touched || family_name?.dirty">
+                        <mat-error *ngIf="family_name?.hasError('required')">
+                            Please enter family name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Honorific Prefix</mat-label>
+                    <input type="text" id="prefix" name="prefix" class="field-prefix" placeholder="Honorific Prefix" matInput formControlName="prefix" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter honorific prefix</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Honorific Suffix</mat-label>
+                    <input type="text" id="suffix" name="suffix" class="field-suffix" placeholder="Honorific Suffix" matInput formControlName="suffix" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter honorific suffix</mat-hint>
+                </mat-form-field>
+
             </fieldset>
             <fieldset>
                 <legend>Contact Information</legend>
-                <div class="wrapper-field">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="field-email" required formControlName="email" />
-                </div><!-- .wrapper-field -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" id="email" name="email" class="field-email" placeholder="Email" required matInput formControlName="email" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter email</mat-hint>
+                    <div class="field-errors" *ngIf="email?.touched || email?.dirty">
+                        <mat-error *ngIf="email?.hasError('required') || email?.hasError('email')">
+                            Please enter a valid email address
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
             </fieldset>
             <fieldset>
-                <button type="submit">save</button>
+                <button mat-raised-button color="primary" [disabled]="userForm.invalid"  >Save</button>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->

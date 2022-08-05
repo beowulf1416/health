@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'view/:user_slug',
     component: UsersComponent
+  },
+  {
+    path: 'add',
+    component: UsersComponent
   }
 ];
 
