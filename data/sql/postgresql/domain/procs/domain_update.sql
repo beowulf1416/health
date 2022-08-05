@@ -1,7 +1,7 @@
 create or replace procedure domain_update (
     p_id domain.domains.id%type,
     p_name domain.domains.name%type,
-    p_slug domain.odomains.slug%type
+    p_slug domain.domains.slug%type
 )
 language plpgsql
 as $$

@@ -162,12 +162,12 @@ impl Domains {
     }
 
 
-    pub async toggle_active(
+    pub async fn set_active(
         &self,
         id: &uuid::Uuid,
         active: &bool
     ) -> Result<(), String> {
-        let query = "call domain.domain_active_toggle($1, $2);";
+        let query = "call domain.domain_set_active($1, $2);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
@@ -182,8 +182,8 @@ impl Domains {
                     ]
                 ).await {
                     Err(e) => {
-                        error!("unable to toggle domain active status : {:?}", e);
-                        return Err(String::from("unable to toggle domain active status"));
+                        error!("unable to set domain active status : {:?}", e);
+                        return Err(String::from("unable to set domain active status"));
                     }
                     Ok(_rows_modified) => {
                         return Ok(());
@@ -211,7 +211,8 @@ impl Domains {
                     &stmt,
                     &[
                         &id,
-                        &active
+                        &name,
+                        &slug
                     ]
                 ).await {
                     Err(e) => {
