@@ -10,7 +10,13 @@ export const environment = {
   path_authenticate: '/user/authenticate',
 
   path_domain_add: '/domain/add',
-  path_user_add: '/user/add'
+  path_domain_list: '/domain/list',
+
+  path_user_add: '/user/add',
+  path_user_list: '/user/list',
+
+  path_role_add: '/role/add',
+  path_role_list: '/role/list'
 };
 
 /*

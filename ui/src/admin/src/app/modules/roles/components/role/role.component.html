@@ -1,16 +1,38 @@
 <div class="component-role">
     <div class="wrapper-form">
-        <form>
+        <form class="form-role" [formGroup]="roleForm" (ngSubmit)="submit()">
             <fieldset>
                 <legend>Information</legend>
-                <div class="wrapper-field">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" class="field-name" required />
-                </div><!-- .wrapper-field -->
-                <div class="wrapper-field">
-                    <label for="slug">Slug</label>
-                    <input type="text" id="slug" name="slug" class="field-slug" required />
-                </div><!-- .wrapper-field -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input type="text" id="name" name="name" class="field-name" placeholder="Role Name" required matInput formControlName="name" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter role name</mat-hint>
+                    <div class="field-errors" *ngIf="name?.touched || name?.dirty">
+                        <mat-error *ngIf="name?.hasError('required')">
+                            Please enter a role name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Slug</mat-label>
+                    <input type="text" id="slug" name="slug" class="field-slug" placeholder="Slug" required matInput formControlName="slug" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter slug</mat-hint>
+                    <div class="field-errors" *ngIf="slug?.touched || slug?.dirty">
+                        <mat-error *ngIf="slug?.hasError('required')">
+                            Please enter a slug
+                        </mat-error>
+                        <mat-error *ngIf="slug?.hasError('slug')">
+                            Slug can only contain alphanumeric characters
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+            </fieldset>
+            <fieldset>
+                <button mat-raised-button color="primary" [disabled]="roleForm.invalid"  >Save</button>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->

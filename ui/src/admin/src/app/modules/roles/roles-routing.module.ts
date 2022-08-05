@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'view',
     component: RoleComponent
+  },
+  {
+    path: 'add',
+    component: RoleComponent
   }
 ];
 

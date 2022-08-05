@@ -4,36 +4,24 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { environment } from 'src/environments/environment';
 
-import {v4 as uuidv4} from 'uuid';
-
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class RoleService {
 
   constructor(
     private http: HttpClient
   ) { }
 
   add(
-    given_name: string,
-    family_name: string,
-    email: string,
-    prefix: string,
-    suffix: string
-  ) : Observable<ApiResponse> {
-    console.log('//TODO: UsersService::add');
-    const new_id = uuidv4();
-
+    name: string,
+    slug: string
+  ): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
-      environment.url_base + environment.path_user_add,
+      environment.url_base + environment.path_role_add,
       {
-        id: new_id,
-        email: email,
-        given_name: given_name,
-        family_name: family_name,
-        prefix: prefix,
-        suffix: suffix
+        name: name,
+        slug: slug
       }
     );
   }
@@ -44,7 +32,7 @@ export class UsersService {
     page: number
   ): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
-      environment.url_base + environment.path_user_list,
+      environment.url_base + environment.path_role_list,
       {
         filter: filter,
         items: items,

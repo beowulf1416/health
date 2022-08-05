@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { environment } from 'src/environments/environment';
+import * as internal from 'stream';
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -29,6 +30,21 @@ export class DomainService {
         id: new_id,
         name: name,
         slug: slug
+      }
+    );
+  }
+
+  list(
+    filter: string,
+    items: number,
+    page: number
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      environment.url_base + environment.path_domain_list,
+      {
+        filter: filter,
+        items: items,
+        page: page
       }
     );
   }

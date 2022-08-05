@@ -6,5 +6,6 @@ export const environment = {
   path_authenticate: '/user/authenticate',
 
   path_domain_add: '/domain/add',
-  path_user_add: '/user/add'
+  path_user_add: '/user/add',
+  path_role_add: '/role/add'
 };
