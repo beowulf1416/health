@@ -1,4 +1,4 @@
-create or replace procedure domain_active_toggle (
+create or replace procedure domain_set_active (
     p_id domain.domains.id%type,
     p_active domain.domains.active%type
 )

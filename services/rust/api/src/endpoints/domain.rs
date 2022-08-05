@@ -90,10 +90,10 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::post().to(domain_get_post))
         )
         .service(
-            web::resource("toggle/active")
+            web::resource("set/active")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
-                .route(web::get().to(domain_toggle_active_get))
-                .route(web::post().to(domain_toggle_active_post))
+                .route(web::get().to(domain_set_active_get))
+                .route(web::post().to(domain_set_active_post))
         )
         .service(
             web::resource("update")
@@ -280,27 +280,27 @@ async fn domain_get_post(
 }
 
 
-async fn domain_toggle_active_get() -> impl Responder {
-    info!("domain_toggle_active_get()");
+async fn domain_set_active_get() -> impl Responder {
+    info!("domain_set_active_get()");
     return HttpResponse::Ok().body("use POST /toggle/active instead");
 }
 
 
-async fn domain_toggle_active_post(
+async fn domain_set_active_post(
     _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<DomainToggleActiveRequest>
 ) -> impl Responder {
-    info!("domain_toggle_active_post()");
+    info!("domain_set_active_post()");
 
     match db.pool().get().await {
         Err(e) => {
-            error!("unable to toggle domain active status: {:?}", e);
+            error!("unable to set domain active status: {:?}", e);
 
             return HttpResponse::InternalServerError()
                 .json(ApiResponse {
                     success: false,
-                    message: String::from("// TODO domain toggle active error"),
+                    message: String::from("// TODO domain set active error"),
                     data: None
                 });
         }
@@ -309,16 +309,16 @@ async fn domain_toggle_active_post(
             let active = params.active.clone();
 
             let domains = Domains::new(client);
-            match domains.toggle_active(
+            match domains.set_active(
                 &id,
                 &active
             ).await {
                 Err(e) => {
-                    error!("unable to toggle domain active status {:?}", e);
+                    error!("unable to set domain active status {:?}", e);
                     return HttpResponse::InternalServerError()
                         .json(ApiResponse {
                             success: false,
-                            message: String::from("// TODO domain toggle active error"),
+                            message: String::from("// TODO domain set active error"),
                             data: None
                         });
                 }
@@ -326,7 +326,7 @@ async fn domain_toggle_active_post(
                     return HttpResponse::Ok()
                         .json(ApiResponse {
                             success: true,
-                            message: String::from("// TODO domain toggle active success"),
+                            message: String::from("// TODO domain set active success"),
                             data: Some(json!({
                                 "domain": result
                             }))
