@@ -16,6 +16,19 @@ create domain email_address
 );
 
 
+create domain slug_text
+  text
+  constraint chk_slug
+  check(
+    length(value) > 2
+    and
+    length(value) < 254
+    and
+    value ~ '[0-9a-z]'
+);
+
+
+
 -- tables
 \ir tables/countries.sql
 \ir tables/currencies.sql

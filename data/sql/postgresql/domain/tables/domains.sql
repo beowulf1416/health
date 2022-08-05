@@ -4,7 +4,8 @@ create table domains (
     created timestamp without time zone not null default(now() at time zone 'utc'),
 
     name text not null,
-    slug varchar(100) not null,
+    -- slug varchar(100) not null,
+    slug common.slug_text not null,
 
     constraint pk_domains
         primary key (id),

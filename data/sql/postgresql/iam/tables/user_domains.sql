@@ -6,6 +6,8 @@ create table user_tenants (
 
     constraint pk_user_domains
         primary key (user_id, domain_id),
+    constraint u_user_domains_1
+        unique (user_id),
     constraint fk_user_domains_1
         foreign key (user_id)
         references iam.users (id)
