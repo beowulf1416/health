@@ -28,6 +28,48 @@ impl Users {
         };
     }
 
+
+    pub async fn add(
+        &self,
+        id: &uuid::Uuid,
+        email: &str,
+        given_name: &str,
+        family_name: &str,
+        prefix: &str,
+        suffix: &str
+    ) -> Result<(), String> {
+        match self.client.prepare_cached(
+            "call iam.user_add($1, $2, $3, $4, $5, $6);"
+        ).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to add user"));
+            }
+            Ok(stmt) => {
+                match self.client.execute(
+                    &stmt,
+                    &[
+                        &id,
+                        &email,
+                        &given_name,
+                        &family_name,
+                        &prefix,
+                        &suffix
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return Err(String::from("unable to add user"));
+                    }
+                    Ok(_rows_modified) => {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+    }
+
+
     pub async fn authenticate(
         &self,
         email: &str,
@@ -53,7 +95,7 @@ impl Users {
                         return false;
                     }
                     Ok(r) => {
-                        let result: bool = r.get("user_authenticat");
+                        let result: bool = r.get("user_authenticate");
                         return result;
                     }
                 }

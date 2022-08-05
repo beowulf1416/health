@@ -1,6 +1,7 @@
 use log::{
     info,
-    debug
+    debug,
+    error
 };
 
 use actix_web::{
@@ -40,8 +41,9 @@ pub struct LoginRequest {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserAddRequest {
+    pub id: uuid::Uuid,
     pub email: String,
-    pub password: String,
+    // pub password: String,
     pub given_name: String,
     pub family_name: String,
     pub prefix: String,
@@ -56,6 +58,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(authenticate_get))
                 .route(web::post().to(authenticate_post))
+        )
+        .service(
+            web::resource("add")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(user_add_get))
+                .route(web::post().to(user_add_post))
         )
     ;
 }
@@ -125,8 +133,9 @@ async fn authenticate_post(
 
 async fn user_add_get() -> impl Responder {
     info!("user_add_get()");
-    return HttpResponse::Ok().body("use POST /add instead");
+    return HttpResponse::Ok().body("use POST /user/add instead");
 }
+
 
 async fn user_add_post(
     request: HttpRequest,
@@ -136,13 +145,61 @@ async fn user_add_post(
 ) -> impl Responder {
     info!("user_add_post()");
 
+    let id = params.id.clone();
     let email = params.email.clone();
-    let pw = params.password.clone();
+    // let pw = params.password.clone();
     let given_name = params.given_name.clone();
     let family_name = params.family_name.clone();
     let prefix = params.prefix.clone();
     let suffix = params.suffix.clone();
     
-    return HttpResponse::Ok().body("// TODO user_add_post()");
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO user_add_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+            let email = params.email.clone();
+            // let pw = params.password.clone();
+            let given_name = params.given_name.clone();
+            let family_name = params.family_name.clone();
+            let prefix = params.prefix.clone();
+            let suffix = params.suffix.clone();
+
+            let users = Users::new(client);
+            match users.add(
+                &id,
+                &email,
+                &given_name,
+                &family_name,
+                &prefix,
+                &suffix
+            ).await {
+                Err(e) => {
+                    error!("unable to add user: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO user_add_post error"),
+                            data: None
+                        });
+                }
+                Ok(_) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO user_add_post success"),
+                            data: None
+                        });
+                }
+            }
+        }
+    }
 }
 
