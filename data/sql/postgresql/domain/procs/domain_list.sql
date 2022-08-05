@@ -21,7 +21,7 @@ begin
             a.slug
         from domain.domains a
         order by
-            a.id
+            a.name asc
         limit p_items
         offset p_items * p_page
         ;
@@ -36,7 +36,7 @@ begin
         where
             a.name like p_filter
         order by
-            a.id
+            a.name asc
         limit p_items
         offset p_items * p_page
         ;
