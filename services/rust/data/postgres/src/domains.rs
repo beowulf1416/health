@@ -225,6 +225,5 @@ impl Domains {
                 }
             }
         }
-
     }
 }

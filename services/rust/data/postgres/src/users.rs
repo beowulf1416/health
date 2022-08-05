@@ -1,4 +1,5 @@
 use log::{
+    info,
     error
 };
 
@@ -38,9 +39,9 @@ impl Users {
         prefix: &str,
         suffix: &str
     ) -> Result<(), String> {
-        match self.client.prepare_cached(
-            "call iam.user_add($1, $2, $3, $4, $5, $6);"
-        ).await {
+        info!("Users::add()");
+        let query = "call iam.user_add($1, $2, $3, $4, $5, $6);"
+        match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
                 return Err(String::from("unable to add user"));
