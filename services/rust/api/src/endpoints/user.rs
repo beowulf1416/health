@@ -51,6 +51,20 @@ pub struct UserAddRequest {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+struct UserSetActiveRequest {
+    pub id: uuid::Uuid,
+    pub active: bool
+}
+
+
+#[derive(Debug, Serialize, Deserialize)]
+struct UserSetPasswordRequest {
+    pub id: uuid::Uuid,
+    pub password: String
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
@@ -64,6 +78,18 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(user_add_get))
                 .route(web::post().to(user_add_post))
+        )
+        .service(
+            web::resource("add")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(user_set_password_get))
+                .route(web::post().to(user_set_password_post))
+        )
+        .service(
+            web::resource("add")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(user_set_active_get))
+                .route(web::post().to(user_set_active_post))
         )
     ;
 }
@@ -139,19 +165,10 @@ async fn user_add_get() -> impl Responder {
 
 async fn user_add_post(
     request: HttpRequest,
-    jwt: web::Data<JWT>,
     db: web::Data<Db>,
     params: web::Json<UserAddRequest>
 ) -> impl Responder {
     info!("user_add_post()");
-
-    let id = params.id.clone();
-    let email = params.email.clone();
-    // let pw = params.password.clone();
-    let given_name = params.given_name.clone();
-    let family_name = params.family_name.clone();
-    let prefix = params.prefix.clone();
-    let suffix = params.suffix.clone();
     
     match db.pool().get().await {
         Err(e) => {
@@ -203,3 +220,113 @@ async fn user_add_post(
     }
 }
 
+
+async fn user_set_password_get() -> impl Responder {
+    info!("user_set_password_get()");
+    return HttpResponse::Ok().body("use POST /set/password instead");
+}
+
+
+async fn user_set_password_post(
+    request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<UserSetPasswordRequest>
+) -> impl Responder {
+    info!("user_set_password_post()");
+    
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO user_set_password_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+            let pw = params.password.clone();
+
+            let users = Users::new(client);
+            match users.set_password(
+                &id,
+                &pw
+            ).await {
+                Err(e) => {
+                    error!("unable to set user password: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO user_set_password_post error"),
+                            data: None
+                        });
+                }
+                Ok(_) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO user_set_password_post success"),
+                            data: None
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+async fn user_set_active_get() -> impl Responder {
+    info!("user_set_active_get()");
+    return HttpResponse::Ok().body("use POST /set/active instead");
+}
+
+
+async fn user_set_active_post(
+    request: HttpRequest,
+    jwt: web::Data<JWT>,
+    db: web::Data<Db>,
+    params: web::Json<UserSetActiveRequest>
+) -> impl Responder {
+    info!("user_set_active_post()");
+    
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO user_set_active_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+            let active = params.active.clone();
+
+            let users = Users::new(client);
+            match users.set_active(
+                &id,
+                &active
+            ).await {
+                Err(e) => {
+                    error!("unable to set user password: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO user_set_active_post error"),
+                            data: None
+                        });
+                }
+                Ok(_) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO user_set_active_post success"),
+                            data: None
+                        });
+                }
+            }
+        }
+    }
+}

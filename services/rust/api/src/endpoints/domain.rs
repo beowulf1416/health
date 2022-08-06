@@ -282,7 +282,7 @@ async fn domain_get_post(
 
 async fn domain_set_active_get() -> impl Responder {
     info!("domain_set_active_get()");
-    return HttpResponse::Ok().body("use POST /toggle/active instead");
+    return HttpResponse::Ok().body("use POST /set/active instead");
 }
 
 
