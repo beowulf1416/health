@@ -33,12 +33,13 @@
                     }
                 }
             },
-            "domainAddRequest": {
+            "userAddRequest": {
                 "type": "object",
                 "required": [
                     "id",
-                    "name",
-                    "slug"
+                    "email",
+                    "given_name",
+                    "family_name"
                 ],
                 "properties": {
                     "id": {
@@ -46,19 +47,33 @@
                         "format": "uuid",
                         "readOnly": true
                     },
-                    "name": {
+                    "email": {
+                        "type": "string",
+                        "format":"email",
+                        "readOnly": true
+                    },
+                    "given_name": {
                         "type": "string",
                         "readOnly": true
                     },
-                    "slug": {
+                    "family_name": {
                         "type": "string",
                         "readOnly": true
+                    },
+                    "prefix": {
+                        "type":"string",
+                        "readOnly":true
+                    },
+                    "suffix": {
+                        "type":"string",
+                        "readOnly":true
                     }
                 },
                 "example": {
                     "id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
-                    "name": "test domain",
-                    "slug": "test_domain"
+                    "email": "test@test.com",
+                    "given_name": "test_given_name",
+                    "family_name": "test_family_name"
                 }
             }
         },
@@ -73,18 +88,18 @@
         }
     },
     "paths": {
-        "/domain/add": {
-            "summary": "add a domain",
+        "/user/add": {
+            "summary": "add a user",
             "post": {
-                "summary": "POST method add a domain",
+                "summary": "POST method add a user",
                 "tags": ["domain"],
-                "operationId": "domain_add",
+                "operationId": "user_add",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/domainAddRequest"
+                                "$ref": "#/components/schemas/userAddRequest"
                             }
                         }
                     }

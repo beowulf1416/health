@@ -1,0 +1,320 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "openapi document",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8081",
+            "description": "local api server"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "apiResponse": {
+                "type": "object",
+                "required": [
+                    "success",
+                    "message"
+                ],
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "readOnly": true
+                    }
+                }
+            },
+            "domainAddRequest": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "slug": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "example": {
+                    "id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "name": "test domain",
+                    "slug": "test_domain"
+                }
+            },
+            "domainSetActiveRequest": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "active"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": "true"
+                    },
+                    "active": {
+                        "type":"boolean",
+                        "readOnly":true
+                    }
+                },
+                "example": {
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "active": true
+                }
+            },
+            "domainUpdateRequest": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": "true"
+                    },
+                    "name": {
+                        "type":"string",
+                        "readOnly":true
+                    },
+                    "slug": {
+                        "type":"string",
+                        "readOnly":true
+                    }
+                },
+                "example": {
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "name":"test update domain",
+                    "slug":"test_update_domain"
+                }
+            },
+            "domainGetRequest": {
+                "type": "object",
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": "true"
+                    }
+                },
+                "example": {
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
+                }
+            },
+            "domainListRequest": {
+                "type": "object",
+                "required": [
+                    "filter",
+                    "items",
+                    "page"
+                ],
+                "properties": {
+                    "filter": {
+                        "type": "string",
+                        "readOnly": "true"
+                    },
+                    "items": {
+                        "type":"number",
+                        "readOnly":true
+                    },
+                    "page": {
+                        "type":"number",
+                        "readOnly":true
+                    }
+                },
+                "example": {
+                    "filter": "%test%",
+                    "items": 10,
+                    "page": 0
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Bearer authentication",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "paths": {
+        "/domain/add": {
+            "summary": "add a domain",
+            "post": {
+                "summary": "POST method add a domain",
+                "tags": ["domain"],
+                "operationId": "domain_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainAddRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/domain/set/active": {
+            "summary": "set domain active status",
+            "post": {
+                "summary": "POST method to set domain active status",
+                "tags": ["domain"],
+                "operationId": "domain_set_active",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainSetActiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain active status updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/domain/update": {
+            "summary": "update domain",
+            "post": {
+                "summary": "POST method to update domain",
+                "tags": ["domain"],
+                "operationId": "domain_update",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/domain/get": {
+            "summary": "get domain",
+            "post": {
+                "summary": "POST method to get domain",
+                "tags": ["domain"],
+                "operationId": "domain_get",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/domain/list": {
+            "summary": "list domains",
+            "post": {
+                "summary": "POST method to list domains",
+                "tags": ["domain"],
+                "operationId": "domain_list",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainListRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
