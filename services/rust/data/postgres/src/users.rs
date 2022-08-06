@@ -40,7 +40,7 @@ impl Users {
         suffix: &str
     ) -> Result<(), String> {
         info!("Users::add()");
-        let query = "call iam.user_add($1, $2, $3, $4, $5, $6);"
+        let query = "call iam.user_add($1, $2, $3, $4, $5, $6);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
@@ -73,7 +73,7 @@ impl Users {
 
     pub async fn set_password(
         &self,
-        id: &uuid:Uuid,
+        id: &uuid::Uuid,
         password: &str
     ) -> Result<(), String> {
         info!("Users::set_password()");
@@ -83,7 +83,7 @@ impl Users {
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return false;
+                return Err(String::from("unable to set user password"));
             }
             Ok(stmt) => {
                 match self.client.execute(
@@ -95,7 +95,7 @@ impl Users {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {:?}", e);
-                        return false;
+                        return Err(String::from("unable to set user password"));
                     }
                     Ok(_rows_modified) => {
                         return Ok(());
@@ -104,6 +104,43 @@ impl Users {
             }
         }
     }
+
+
+
+    pub async fn set_active(
+        &self,
+        id: &uuid::Uuid,
+        active: &bool
+    ) -> Result<(), String> {
+        info!("Users::set_active()");
+        
+        let query = "call iam.user_set_active($1, $2)";
+
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to set user active status"));
+            }
+            Ok(stmt) => {
+                match self.client.execute(
+                    &stmt,
+                    &[
+                        &id,
+                        &active
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return Err(String::from("unable to set user active status"));
+                    }
+                    Ok(_rows_modified) => {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+    }
+
 
 
     pub async fn authenticate(

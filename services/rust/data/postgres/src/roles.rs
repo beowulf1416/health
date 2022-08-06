@@ -42,7 +42,7 @@ impl Roles {
     ) -> Result<(), String> {
         info!("Roles::add()");
 
-        let query = "call iam.role_add($1, $2, $3);"
+        let query = "call iam.role_add($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {} {:?}", query, e);
