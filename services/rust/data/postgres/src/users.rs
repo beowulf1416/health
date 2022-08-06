@@ -71,6 +71,41 @@ impl Users {
     }
 
 
+    pub async fn set_password(
+        &self,
+        id: &uuid:Uuid,
+        password: &str
+    ) -> Result<(), String> {
+        info!("Users::set_password()");
+        
+        let query = "call iam.user_set_password($1, $2)";
+
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return false;
+            }
+            Ok(stmt) => {
+                match self.client.execute(
+                    &stmt,
+                    &[
+                        &id,
+                        &password
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return false;
+                    }
+                    Ok(_rows_modified) => {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+    }
+
+
     pub async fn authenticate(
         &self,
         email: &str,
