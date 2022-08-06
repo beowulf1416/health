@@ -13,7 +13,7 @@ declare
     t_pw text;
 begin
     -- generate random password
-    set t_salt = public.gen_salt();
+    set t_salt = public.gen_salt('md5');
     set t_pw = public.crypt(random()::text, t_salt);
 
     insert into iam.users (
