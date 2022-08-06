@@ -1,0 +1,38 @@
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ 
+    "id": "76a6bf2f-849c-4aec-bb85-e261dc28ee8e", 
+    "email": "test@test.com", 
+    "given_name": "test given name", 
+    "family_name": "test family name", 
+    "prefix": "", 
+    "suffix": "" 
+    }' \
+http://localhost:8081/user/add
+
+
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ 
+    "id": "76a6bf2f-849c-4aec-bb85-e261dc28ee8e", 
+    "password": "new_password"
+    }' \
+http://localhost:8081/user/set/password
+
+
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ 
+    "id": "76a6bf2f-849c-4aec-bb85-e261dc28ee8e", 
+    "active": true
+    }' \
+http://localhost:8081/user/set/active
+
+
+curl -i -X POST \
+-H "Content-Type: application/json" \
+-d '{ 
+    "email": "test@test.com", 
+    "password": "test" 
+    }' \
+http://localhost:8081/user/authenticate 
