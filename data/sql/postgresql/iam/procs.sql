@@ -8,3 +8,4 @@ set schema 'iam';
 \ir procs/users/user_get.sql
 
 \ir procs/roles/role_add.sql
+\ir procs/roles/role_list.sql
