@@ -75,6 +75,72 @@
                     "given_name": "test_given_name",
                     "family_name": "test_family_name"
                 }
+            },
+            "userSetActiveRequest": {
+                "type":"object",
+                "required":[
+                    "id",
+                    "active"
+                ],
+                "properties":{
+                    "id":{
+                        "type":"string",
+                        "format":"uuid",
+                        "readOnly":true
+                    },
+                    "active":{
+                        "type":"boolean",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "active":true
+                }
+            },
+            "userSetPasswordRequest": {
+                "type":"object",
+                "required":[
+                    "id",
+                    "password"
+                ],
+                "properties":{
+                    "id":{
+                        "type":"string",
+                        "format":"uuid",
+                        "readOnly":true
+                    },
+                    "password": {
+                        "type":"boolean",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "password":"ThisIsaPassword8*"
+                }
+            },
+            "userAuthenticateRequest": {
+                "type":"object",
+                "required":[
+                    "email",
+                    "password"
+                ],
+                "properties":{
+                    "email":{
+                        "type":"string",
+                        "format":"email",
+                        "readOnly":true
+                    },
+                    "password":{
+                        "type":"string",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "email":"test@test.com",
+                    "password":"ThisIsaPassword8*9"
+                }
             }
         },
         "securitySchemes": {
@@ -92,7 +158,7 @@
             "summary": "add a user",
             "post": {
                 "summary": "POST method add a user",
-                "tags": ["domain"],
+                "tags": ["user"],
                 "operationId": "user_add",
                 "requestBody": {
                     "required": true,
@@ -107,6 +173,96 @@
                 "responses": {
                     "200": {
                         "description": "domain added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/set/active": {
+            "summary": "set user active status",
+            "post": {
+                "summary": "POST method to set user active status",
+                "tags": ["user"],
+                "operationId": "user_set_active",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userSetActiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "user active status set",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/set/password": {
+            "summary": "set user password",
+            "post": {
+                "summary": "POST method to set user password",
+                "tags": ["user"],
+                "operationId": "user_set_password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userSetPasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "user set password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/authenticate": {
+            "summary": "authenticate user",
+            "post": {
+                "summary": "POST method authenticate user",
+                "tags": ["user"],
+                "operationId": "user_authenticate",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userAuthenticateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "user authenticate",
                         "content": {
                             "application/json": {
                                 "schema": {
