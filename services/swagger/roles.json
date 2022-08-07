@@ -1,0 +1,107 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "openapi document",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8081",
+            "description": "local api server"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "apiResponse": {
+                "type": "object",
+                "required": [
+                    "success",
+                    "message"
+                ],
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "readOnly": true
+                    }
+                }
+            },
+            "roleAddRequest": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "slug": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "example": {
+                    "id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "name": "test_role",
+                    "given_name": "test-role"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Bearer authentication",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "paths": {
+        "/role/add": {
+            "summary": "add a role",
+            "post": {
+                "summary": "POST method add a role",
+                "tags": ["role"],
+                "operationId": "role_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleAddRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
