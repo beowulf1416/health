@@ -27,7 +27,8 @@ use postgres::{
 
 use crate::endpoints::{
     ApiResponse,
-    // ApiResponseStatus,
+    FilterRequest,
+    GetObjectRequest,
     api_options
 };
 
@@ -80,16 +81,28 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::post().to(user_add_post))
         )
         .service(
-            web::resource("add")
+            web::resource("set/password")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(user_set_password_get))
                 .route(web::post().to(user_set_password_post))
         )
         .service(
-            web::resource("add")
+            web::resource("set/active")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(user_set_active_get))
                 .route(web::post().to(user_set_active_post))
+        )
+        .service(
+            web::resource("list")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(user_list_get))
+                .route(web::post().to(user_list_post))
+        )
+        .service(
+            web::resource("get")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(user_get_get))
+                .route(web::post().to(user_get_post))
         )
     ;
 }
@@ -164,7 +177,7 @@ async fn user_add_get() -> impl Responder {
 
 
 async fn user_add_post(
-    request: HttpRequest,
+    _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<UserAddRequest>
 ) -> impl Responder {
@@ -228,7 +241,7 @@ async fn user_set_password_get() -> impl Responder {
 
 
 async fn user_set_password_post(
-    request: HttpRequest,
+    _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<UserSetPasswordRequest>
 ) -> impl Responder {
@@ -283,8 +296,7 @@ async fn user_set_active_get() -> impl Responder {
 
 
 async fn user_set_active_post(
-    request: HttpRequest,
-    jwt: web::Data<JWT>,
+    _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<UserSetActiveRequest>
 ) -> impl Responder {
@@ -324,6 +336,121 @@ async fn user_set_active_post(
                             success: true,
                             message: String::from("// TODO user_set_active_post success"),
                             data: None
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+async fn user_list_get() -> impl Responder {
+    info!("user_list_get()");
+    return HttpResponse::Ok().body("use POST /list instead");
+}
+
+
+async fn user_list_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<FilterRequest>
+) -> impl Responder {
+    info!("user_list_post()");
+    
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO user_list_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let filter = params.filter.clone();
+            let items = params.items.clone();
+            let page = params.page.clone();
+
+            let users = Users::new(client);
+            match users.list(
+                &filter,
+                &items,
+                &page
+            ).await {
+                Err(e) => {
+                    error!("unable to list users: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO user_list_post error"),
+                            data: None
+                        });
+                }
+                Ok(users) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO user_list_post success"),
+                            data: json!({
+                                "users": users
+                            })
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+
+async fn user_get_get() -> impl Responder {
+    info!("user_get_get()");
+    return HttpResponse::Ok().body("use POST /get instead");
+}
+
+
+async fn user_get_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<GetObjectRequest>
+) -> impl Responder {
+    info!("user_get_post()");
+    
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO user_get_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let id = params.id.clone();
+
+            let users = Users::new(client);
+            match users.get(
+                &id
+            ).await {
+                Err(e) => {
+                    error!("unable to user: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO user_get_post error"),
+                            data: None
+                        });
+                }
+                Ok(user) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO user_get_post success"),
+                            data: json!({
+                                "user": user
+                            })
                         });
                 }
             }

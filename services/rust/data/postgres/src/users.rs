@@ -15,6 +15,17 @@ use actix_web::{
 use crate::Db;
 
 
+pub struct User {
+    pub id: uuid::Uuid,
+    pub active: bool,
+    pub email: String,
+    pub given_name: String,
+    pub family_name: String,
+    pub prefix: String,
+    pub suffix: String
+}
+
+
 pub struct Users {
     // db: Db
     client: Object<Manager>
@@ -170,6 +181,107 @@ impl Users {
                     Ok(r) => {
                         let result: bool = r.get("user_authenticate");
                         return result;
+                    }
+                }
+            }
+        }
+    }
+
+
+    pub async fn list(
+        &self,
+        filter: &str,
+        items: &i32,
+        page: &i32
+    ) -> Result<Vec<User>, String> {
+        let query = "select * from iam.user_list($1, $2, $3);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return false;
+            }
+            Ok(stmt) => {
+                match self.client.query(
+                    &stmt,
+                    &[
+                        &filter,
+                        &items,
+                        &page
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return Err(String::from("unable to retrieve list of users"));
+                    }
+                    Ok(rows) => {
+                        let users: Vec<User> = Vec::new();
+
+                        for r in rows {
+                            let id: uuid::Uuid = r.get("id");
+                            let active: bool = r.get("active");
+                            let email: String = r.get("email");
+                            let given_name: String = r.get("given_name");
+                            let family_name: String = r.get("family_name");
+                            let prefix: String = r.get("honorific_prefix");
+                            let suffix: String = r.get("honorific_suffix");
+
+                            users.push(User {
+                                id: id,
+                                email: email,
+                                given_name: given_name,
+                                family_name: family_name,
+                                prefix: prefix,
+                                suffix: suffix
+                            });
+                        }
+
+                        return Ok(users);
+                    }
+                }
+            }
+        }
+    }
+
+    pub async fn get(
+        &self,
+        id: &uuid::Uuid
+    ) -> Result<Vec<User>, String> {
+        let query = "select * from iam.user_list($1, $2, $3);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return false;
+            }
+            Ok(stmt) => {
+                match self.client.query_one(
+                    &stmt,
+                    &[
+                        &filter,
+                        &items,
+                        &page
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return Err(String::from("unable to retrieve list of users"));
+                    }
+                    Ok(r) => {
+                        let id: uuid::Uuid = r.get("id");
+                        let active: bool = r.get("active");
+                        let email: String = r.get("email");
+                        let given_name: String = r.get("given_name");
+                        let family_name: String = r.get("family_name");
+                        let prefix: String = r.get("honorific_prefix");
+                        let suffix: String = r.get("honorific_suffix");
+
+                        return Ok(User {
+                            id: id,
+                            email: email,
+                            given_name: given_name,
+                            family_name: family_name,
+                            prefix: prefix,
+                            suffix: suffix
+                        });
                     }
                 }
             }

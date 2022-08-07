@@ -37,6 +37,20 @@ pub struct ApiResponse {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct FilterRequest {
+    pub filter: String,
+    pub items: i32,
+    pub page: i32
+}
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GetObjectRequest {
+    pub id: uuid::Uuid
+}
+
+
 pub async fn api_options() -> impl Responder {
     return HttpResponse::Ok();
 }
