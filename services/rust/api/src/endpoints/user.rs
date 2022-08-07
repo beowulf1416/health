@@ -45,7 +45,6 @@ pub struct LoginRequest {
 pub struct UserAddRequest {
     pub id: uuid::Uuid,
     pub email: String,
-    // pub password: String,
     pub given_name: String,
     pub family_name: String,
     pub prefix: String,

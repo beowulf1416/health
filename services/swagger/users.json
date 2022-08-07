@@ -39,7 +39,9 @@
                     "id",
                     "email",
                     "given_name",
-                    "family_name"
+                    "family_name",
+                    "prefix",
+                    "suffix"
                 ],
                 "properties": {
                     "id": {
@@ -73,7 +75,9 @@
                     "id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
                     "email": "test@test.com",
                     "given_name": "test_given_name",
-                    "family_name": "test_family_name"
+                    "family_name": "test_family_name",
+                    "prefix": "",
+                    "suffix": ""
                 }
             },
             "userSetActiveRequest": {

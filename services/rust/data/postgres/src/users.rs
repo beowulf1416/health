@@ -14,7 +14,10 @@ use actix_web::{
 
 use serde::{ Serialize, Deserialize };
 
-use crate::Db;
+use crate::{
+    Db,
+    email::EmailAddress
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -53,6 +56,9 @@ impl Users {
     ) -> Result<(), String> {
         info!("Users::add()");
         let query = "call iam.user_add($1, $2, $3, $4, $5, $6);";
+
+        let email_address = EmailAddress::new(String::from(email));
+
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
@@ -63,7 +69,7 @@ impl Users {
                     &stmt,
                     &[
                         &id,
-                        &email,
+                        &email_address,
                         &given_name,
                         &family_name,
                         &prefix,

@@ -1,3 +1,5 @@
+pub mod email;
+
 pub mod domains;
 pub mod permissions;
 pub mod roles;
