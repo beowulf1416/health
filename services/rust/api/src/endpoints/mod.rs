@@ -19,16 +19,6 @@ use serde::{
 use serde_json::Value;
 
 
-// #[derive(Debug, Serialize, Deserialize)]
-// pub enum ApiResponseStatus {
-//     #[serde(rename="success")]
-//     Success,
-//     #[serde(rename="fail")]
-//     Fail,
-//     #[serde(rename="error")]
-//     Error
-// }
-
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ApiResponse {
     pub success: bool,

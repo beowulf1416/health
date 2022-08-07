@@ -17,6 +17,7 @@ use serde::{
     Serialize,
     Deserialize
 };
+use serde_json::json;
 
 use jwt::JWT;
 
@@ -115,7 +116,7 @@ async fn authenticate_get() -> impl Responder {
 
 
 async fn authenticate_post(
-    request: HttpRequest,
+    _request: HttpRequest,
     jwt: web::Data<JWT>,
     db: web::Data<Db>,
     params: web::Json<LoginRequest>
@@ -392,9 +393,9 @@ async fn user_list_post(
                         .json(ApiResponse {
                             success: true,
                             message: String::from("// TODO user_list_post success"),
-                            data: json!({
+                            data: Some(json!({
                                 "users": users
-                            })
+                            }))
                         });
                 }
             }
@@ -448,9 +449,9 @@ async fn user_get_post(
                         .json(ApiResponse {
                             success: true,
                             message: String::from("// TODO user_get_post success"),
-                            data: json!({
+                            data: Some(json!({
                                 "user": user
-                            })
+                            }))
                         });
                 }
             }

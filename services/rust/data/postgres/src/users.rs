@@ -12,9 +12,11 @@ use actix_web::{
     HttpResponse
 };
 
+use serde::{ Serialize, Deserialize };
+
 use crate::Db;
 
-
+#[derive(Debug, Serialize, Deserialize)]
 pub struct User {
     pub id: uuid::Uuid,
     pub active: bool,
@@ -27,7 +29,6 @@ pub struct User {
 
 
 pub struct Users {
-    // db: Db
     client: Object<Manager>
 }
 
@@ -198,7 +199,7 @@ impl Users {
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return false;
+                return Err(String::from("unable to list users"));
             }
             Ok(stmt) => {
                 match self.client.query(
@@ -214,7 +215,7 @@ impl Users {
                         return Err(String::from("unable to retrieve list of users"));
                     }
                     Ok(rows) => {
-                        let users: Vec<User> = Vec::new();
+                        let mut users: Vec<User> = Vec::new();
 
                         for r in rows {
                             let id: uuid::Uuid = r.get("id");
@@ -227,6 +228,7 @@ impl Users {
 
                             users.push(User {
                                 id: id,
+                                active: active,
                                 email: email,
                                 given_name: given_name,
                                 family_name: family_name,
@@ -245,20 +247,18 @@ impl Users {
     pub async fn get(
         &self,
         id: &uuid::Uuid
-    ) -> Result<Vec<User>, String> {
+    ) -> Result<User, String> {
         let query = "select * from iam.user_list($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return false;
+                return Err(String::from("unable to retrieve user"));
             }
             Ok(stmt) => {
                 match self.client.query_one(
                     &stmt,
                     &[
-                        &filter,
-                        &items,
-                        &page
+                        &id
                     ]
                 ).await {
                     Err(e) => {
@@ -276,6 +276,7 @@ impl Users {
 
                         return Ok(User {
                             id: id,
+                            active: active,
                             email: email,
                             given_name: given_name,
                             family_name: family_name,
