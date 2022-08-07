@@ -44,6 +44,8 @@ impl Domains {
         name: &str,
         slug: &str
     ) -> Result<(), String> {
+        info!("Domains::add()");
+
         let query = "call domain.domain_add($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
@@ -78,6 +80,8 @@ impl Domains {
         items: &i32,
         page: &i32
     ) -> Result<Vec<Domain>, String> {
+        info!("Domains::list()");
+
         let query = "select * from domain.domain_list($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
@@ -126,6 +130,8 @@ impl Domains {
         &self,
         id: &uuid::Uuid
     ) -> Result<Domain, String> {
+        info!("Domains::get()");
+
         let query = "select * from domain.domain_get($1);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
@@ -167,6 +173,8 @@ impl Domains {
         id: &uuid::Uuid,
         active: &bool
     ) -> Result<(), String> {
+        info!("Domains::set_active()");
+
         let query = "call domain.domain_set_active($1, $2);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
@@ -200,6 +208,8 @@ impl Domains {
         name: &String,
         slug: &String
     ) -> Result<(), String> {
+        info!("Domains::update()");
+        
         let query = "call domain.domain_update($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
