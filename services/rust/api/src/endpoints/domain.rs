@@ -11,7 +11,7 @@ use actix_web::{
     web
 };
 
-use http::header::AUTHORIZATION;
+// use http::header::AUTHORIZATION;
 
 use serde::{
     Serialize,
@@ -19,7 +19,7 @@ use serde::{
 };
 use serde_json::json;
 
-use jwt::JWT;
+// use jwt::JWT;
 
 use postgres::{ 
     Db,
