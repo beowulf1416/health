@@ -33,10 +33,11 @@
                     }
                 }
             },
-            "roleAddRequest": {
+            "roleAddUpdateRequest": {
                 "type": "object",
                 "required": [
                     "id",
+                    "domain_id",
                     "name",
                     "slug"
                 ],
@@ -45,6 +46,11 @@
                         "type": "string",
                         "format": "uuid",
                         "readOnly": true
+                    },
+                    "domain_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly":true
                     },
                     "name": {
                         "type": "string",
@@ -57,8 +63,74 @@
                 },
                 "example": {
                     "id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "domain_id": "47d7164a-fc10-4216-96c5-e2ad34ad66a4",
                     "name": "test_role",
                     "given_name": "test-role"
+                }
+            },
+            "roleListRequest": {
+                "type": "object",
+                "required":[
+                    "filter",
+                    "items",
+                    "page"
+                ],
+                "properties":{
+                    "filter": {
+                        "type": "string",
+                        "readOnly":true
+                    },
+                    "items": {
+                        "type":"number",
+                        "readOnly":true
+                    },
+                    "page": {
+                        "type":"number",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "filter": "%test%",
+                    "items": 10,
+                    "page": 0
+                }
+            },
+            "roleGetRequest": {
+                "type":"object",
+                "required":[
+                    "id"
+                ],
+                "properties":{
+                    "id":{
+                        "type":"string",
+                        "format":"uuid",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
+                }
+            },
+            "roleSetActiveRequest":{
+                "type":"object",
+                "required":[
+                    "id",
+                    "active"
+                ],
+                "properties":{
+                    "id":{
+                        "type":"string",
+                        "format":"uuid",
+                        "readOnly":true
+                    },
+                    "active":{
+                        "type":"boolean",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4",
+                    "active":true
                 }
             }
         },
@@ -84,7 +156,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/roleAddRequest"
+                                "$ref": "#/components/schemas/roleAddUpdateRequest"
                             }
                         }
                     }
@@ -92,6 +164,126 @@
                 "responses": {
                     "200": {
                         "description": "domain added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/role/list": {
+            "summary": "list roles",
+            "post": {
+                "summary": "POST method list roles",
+                "tags": ["role"],
+                "operationId": "role_list",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleListRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "list users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/role/get": {
+            "summary": "get role",
+            "post": {
+                "summary": "POST method get role",
+                "tags": ["role"],
+                "operationId": "role_get",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "list users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/role/set/active": {
+            "summary": "set role active status",
+            "post": {
+                "summary": "POST method set role active status",
+                "tags": ["role"],
+                "operationId": "role_set_active",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleSetActiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "list users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/role/update": {
+            "summary": "update role",
+            "post": {
+                "summary": "POST method update role",
+                "tags": ["role"],
+                "operationId": "role_update",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleAddUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "list users",
                         "content": {
                             "application/json": {
                                 "schema": {
