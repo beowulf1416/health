@@ -14,7 +14,10 @@ use actix_web::{
 
 use serde::{ Serialize, Deserialize };
 
-use crate::Db;
+use crate::{
+    Db,
+    slug::Slug
+};
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -53,12 +56,14 @@ impl Domains {
                 return Err(String::from("unable to prepare statement"));
             }
             Ok(stmt) => {
+                let slug_text = Slug::new(String::from(slug));
+
                 match self.client.query(
                     &stmt,
                     &[
                         &id,
                         &name,
-                        &slug
+                        &slug_text
                     ]
                 ).await {
                     Err(e) => {

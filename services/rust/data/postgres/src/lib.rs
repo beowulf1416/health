@@ -1,4 +1,5 @@
 pub mod email;
+pub mod slug;
 
 pub mod domains;
 pub mod permissions;
