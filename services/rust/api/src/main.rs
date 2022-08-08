@@ -41,6 +41,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(crate::middleware::cors::CORS::new())
             .service(web::scope("/status").configure(crate::endpoints::status::config))
             .service(web::scope("/domain").configure(crate::endpoints::domain::config))
+            .service(web::scope("/role").configure(crate::endpoints::role::config))
             .service(web::scope("/user").configure(crate::endpoints::user::config))
     })
     .bind("0.0.0.0:8081")?

@@ -1,10 +1,11 @@
 pub mod status;
 pub mod domain;
+pub mod role;
 pub mod user;
 
-use log::{
-    info
-};
+// use log::{
+//     info
+// };
 
 use actix_web::{
     HttpResponse, 
