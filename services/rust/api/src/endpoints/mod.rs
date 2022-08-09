@@ -42,6 +42,12 @@ pub struct GetObjectRequest {
 }
 
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GetObjectBySlugRequest {
+    pub slug: String
+}
+
+
 pub async fn api_options() -> impl Responder {
     return HttpResponse::Ok();
 }

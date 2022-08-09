@@ -28,6 +28,8 @@ use postgres::{
 
 use crate::endpoints::{
     ApiResponse,
+    GetObjectRequest,
+    GetObjectBySlugRequest,
     api_options
 };
 
@@ -45,12 +47,6 @@ struct DomainListRequest {
     pub filter: String,
     pub items: i32,
     pub page: i32
-}
-
-
-#[derive(Debug, Serialize, Deserialize)]
-struct DomainGetRequest {
-    pub id: uuid::Uuid
 }
 
 
@@ -88,6 +84,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(domain_get_get))
                 .route(web::post().to(domain_get_post))
+        )
+        .service(
+            web::resource("get/slug")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(domain_get_by_slug_get))
+                .route(web::post().to(domain_get_by_slug_post))
         )
         .service(
             web::resource("set/active")
@@ -233,7 +235,7 @@ async fn domain_get_get() -> impl Responder {
 async fn domain_get_post(
     _request: HttpRequest,
     db: web::Data<Db>,
-    params: web::Json<DomainGetRequest>
+    params: web::Json<GetObjectRequest>
 ) -> impl Responder {
     info!("domain_get_post()");
 
@@ -256,7 +258,63 @@ async fn domain_get_post(
                 &id
             ).await {
                 Err(e) => {
-                    error!("unable to list domains: {:?}", e);
+                    error!("unable to get domain: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO domain get error"),
+                            data: None
+                        });
+                }
+                Ok(result) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO domain get success"),
+                            data: Some(json!({
+                                "domain": result
+                            }))
+                        });
+                }
+            }
+        }
+    }
+}
+
+
+async fn domain_get_by_slug_get() -> impl Responder {
+    info!("domain_get_by_slug_get()");
+    return HttpResponse::Ok().body("use POST /get/slug instead");
+}
+
+
+async fn domain_get_by_slug_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<GetObjectBySlugRequest>
+) -> impl Responder {
+    info!("domain_get_by_slug_post()");
+
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client: {:?}", e);
+
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO domain get error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let slug = params.slug.clone();
+
+            let domains = Domains::new(client);
+            match domains.get(
+                &slug
+            ).await {
+                Err(e) => {
+                    error!("unable to get domain: {:?}", e);
                     return HttpResponse::InternalServerError()
                         .json(ApiResponse {
                             success: false,
