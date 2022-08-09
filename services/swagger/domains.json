@@ -127,6 +127,21 @@
                     "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
                 }
             },
+            "domainGetBySlugRequest": {
+                "type": "object",
+                "required": [
+                    "slug"
+                ],
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "readOnly": "true"
+                    }
+                },
+                "example": {
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
+                }
+            },
             "domainListRequest": {
                 "type": "object",
                 "required": [
@@ -268,6 +283,36 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/domainGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/domain/get/slug": {
+            "summary": "get domain by slug",
+            "post": {
+                "summary": "POST method to get domain by slug",
+                "tags": ["domain"],
+                "operationId": "domain_get",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/domainGetBySlugRequest"
                             }
                         }
                     }
