@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { environment } from 'src/environments/environment';
-import * as internal from 'stream';
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -47,5 +46,44 @@ export class DomainService {
         page: page
       }
     );
+  }
+
+  get(
+    id: string
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      environment.url_base + environment.path_domain_get,
+      {
+        id: id
+      }
+    );
+  }
+
+  set_active(
+    id: string,
+    active: boolean
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      environment.url_base + environment.path_domain_set_active,
+      {
+        id: id,
+        active: active
+      }
+    );
+  }
+
+  update(
+    id: string,
+    name: string,
+    slug: string
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      environment.url_base + environment.path_domain_update,
+      {
+        id: id,
+        name: name,
+        slug: slug
+      }
+    )
   }
 }

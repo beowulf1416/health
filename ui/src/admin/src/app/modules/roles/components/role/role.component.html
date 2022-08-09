@@ -5,6 +5,18 @@
                 <legend>Information</legend>
 
                 <mat-form-field appearance="outline">
+                    <mat-label>Domain</mat-label>
+                    <input type="text" id="domain" name="domain" class="field-domain" placeholder="Domain Name" required matInput formControlName="domain" >
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please select domain</mat-hint>
+                    <div class="field-errors" *ngIf="domain?.touched || domain?.dirty">
+                        <mat-error *ngIf="domain?.hasError('required')">
+                            Please select a role
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
                     <mat-label>Name</mat-label>
                     <input type="text" id="name" name="name" class="field-name" placeholder="Role Name" required matInput formControlName="name" >
                     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>

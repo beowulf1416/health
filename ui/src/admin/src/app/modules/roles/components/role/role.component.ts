@@ -11,6 +11,9 @@ import { TitleService } from 'src/app/services/title.service';
 export class RoleComponent implements OnInit {
 
   roleForm = new FormGroup({
+    domain: new FormControl('', [
+      Validators.required
+    ]),
     name: new FormControl('', [
       Validators.required
     ]),
@@ -27,6 +30,10 @@ export class RoleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  get domain() {
+    return this.roleForm.get('domain');
   }
 
   get name() {
