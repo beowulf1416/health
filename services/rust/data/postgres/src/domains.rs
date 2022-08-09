@@ -173,6 +173,49 @@ impl Domains {
     }
 
 
+
+    pub async fn get_by_slug(
+        &self,
+        slug: &str
+    ) -> Result<Domain, String> {
+        info!("Domains::get_by_slug()");
+
+        let query = "select * from domain.domain_get_by_slug($1);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to prepare statement"));
+            }
+            Ok(stmt) => {
+                match self.client.query_one(
+                    &stmt,
+                    &[
+                        &id
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("unable to retrieve domain : {:?}", e);
+                        return Err(String::from("unable to retrieve domain"));
+                    }
+                    Ok(row) => {
+                        let domain_id: uuid::Uuid = row.get("id");
+                        let active: bool = row.get("active");
+                        let name: String = row.get("name");
+                        let slug: String = row.get("slug");
+
+                        return Ok(Domain {
+                            id: domain_id,
+                            active: active,
+                            name: name,
+                            slug: slug
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+
     pub async fn set_active(
         &self,
         id: &uuid::Uuid,
