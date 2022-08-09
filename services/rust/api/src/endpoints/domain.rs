@@ -310,7 +310,7 @@ async fn domain_get_by_slug_post(
             let slug = params.slug.clone();
 
             let domains = Domains::new(client);
-            match domains.get(
+            match domains.get_by_slug(
                 &slug
             ).await {
                 Err(e) => {

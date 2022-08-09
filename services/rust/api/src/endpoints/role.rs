@@ -26,6 +26,7 @@ use crate::endpoints::{
     ApiResponse,
     FilterRequest,
     GetObjectRequest,
+    GetObjectBySlugRequest,
     api_options
 };
 
@@ -65,6 +66,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(role_get_get))
                 .route(web::post().to(role_get_post))
+        )
+        .service(
+            web::resource("get/slug")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(role_get_by_slug_get))
+                .route(web::post().to(role_get_by_slug_post))
         )
         .service(
             web::resource("set/active")
@@ -254,6 +261,60 @@ async fn role_get_post(
     }
 }
 
+
+async fn role_get_by_slug_get() -> impl Responder {
+    info!("role_get_by_slug_get()");
+    return HttpResponse::Ok().body("use POST /role/get/slug instead");
+}
+
+
+async fn role_get_by_slug_post(
+    _request: HttpRequest,
+    db: web::Data<Db>,
+    params: web::Json<GetObjectBySlugRequest>
+) -> impl Responder {
+    info!("role_get_by_slug_post()");
+    
+    match db.pool().get().await {
+        Err(e) => {
+            error!("unable to retrieve client connection: {:?}", e);
+            return HttpResponse::InternalServerError()
+                .json(ApiResponse {
+                    success: false,
+                    message: String::from("// TODO role_get_by_slug_post error"),
+                    data: None
+                });
+        }
+        Ok(client) => {
+            let slug = params.slug.clone();
+
+            let roles = Roles::new(client);
+            match roles.get_by_slug(
+                &slug
+            ).await {
+                Err(e) => {
+                    error!("unable to get role: {:?}", e);
+                    return HttpResponse::InternalServerError()
+                        .json(ApiResponse {
+                            success: false,
+                            message: String::from("// TODO role_get_by_slug_post error"),
+                            data: None
+                        });
+                }
+                Ok(role) => {
+                    return HttpResponse::Ok()
+                        .json(ApiResponse {
+                            success: true,
+                            message: String::from("// TODO role_get_by_slug_post success"),
+                            data: Some(json!({
+                                "role": role
+                            }))
+                        });
+                }
+            }
+        }
+    }
+}
 
 
 async fn role_set_active_get() -> impl Responder {
