@@ -190,7 +190,7 @@ impl Domains {
                 match self.client.query_one(
                     &stmt,
                     &[
-                        &id
+                        &slug
                     ]
                 ).await {
                     Err(e) => {

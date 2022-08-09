@@ -179,6 +179,50 @@ impl Roles {
     }
 
 
+    pub async fn get_by_slug(
+        &self,
+        slug: &str
+    ) -> Result<Role, String> {
+        info!("Roles::get_by_slug()");
+
+        let query = "call iam.role_get_by_slug($1);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {} {:?}", query, e);
+                return Err(String::from("unable to get role"));
+            }
+            Ok(stmt) => {
+                match self.client.query_one(
+                    &stmt,
+                    &[
+                        &slug
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {} {:?}", query, e);
+                        return Err(String::from("unable to role"));
+                    }
+                    Ok(r) => {
+                        let id: uuid::Uuid = r.get("id");
+                        let domain_id: uuid::Uuid = r.get("domain_id");
+                        let active: bool = r.get("active");
+                        let name: String = r.get("name");
+                        let slug: String = r.get("slug");
+
+                        return Ok(Role {
+                            id: id,
+                            domain_id: domain_id,
+                            active: active,
+                            name: name,
+                            slug: slug
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+
     pub async fn set_active(
         &self,
         id: &uuid::Uuid,
