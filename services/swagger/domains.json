@@ -139,7 +139,7 @@
                     }
                 },
                 "example": {
-                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
+                    "slug":"test_domain"
                 }
             },
             "domainListRequest": {
@@ -306,7 +306,7 @@
             "post": {
                 "summary": "POST method to get domain by slug",
                 "tags": ["domain"],
-                "operationId": "domain_get",
+                "operationId": "domain_get_slug",
                 "requestBody": {
                     "required": true,
                     "content": {

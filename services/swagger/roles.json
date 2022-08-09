@@ -111,6 +111,21 @@
                     "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
                 }
             },
+            "roleGetBySlugRequest": {
+                "type":"object",
+                "required":[
+                    "slug"
+                ],
+                "properties":{
+                    "slug":{
+                        "type":"string",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "slug":"test_role"
+                }
+            },
             "roleSetActiveRequest":{
                 "type":"object",
                 "required":[
@@ -217,6 +232,36 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/roleGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "list users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/role/get/slug": {
+            "summary": "get role by slug",
+            "post": {
+                "summary": "POST method get role by slug",
+                "tags": ["role"],
+                "operationId": "role_get_slug",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/roleGetBySlugRequest"
                             }
                         }
                     }
