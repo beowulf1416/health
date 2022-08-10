@@ -1,5 +1,6 @@
 extern crate log;
 
+mod models;
 mod services;
 mod middleware;
 mod endpoints;
@@ -39,6 +40,7 @@ async fn main() -> std::io::Result<()> {
             .configure(crate::services::jwt::configure)
             .configure(crate::services::db::configure)
             .wrap(crate::middleware::cors::CORS::new())
+            .wrap(crate::middleware::user::User::new())
             .service(web::scope("/status").configure(crate::endpoints::status::config))
             .service(web::scope("/domain").configure(crate::endpoints::domain::config))
             .service(web::scope("/role").configure(crate::endpoints::role::config))

@@ -1,6 +1,6 @@
 use log::{
     info,
-    // debug,
+    debug,
     error
 };
 
@@ -185,9 +185,12 @@ async fn current_get() -> impl Responder {
 async fn current_post(
     _request: HttpRequest,
     jwt: web::Data<JWT>,
-    db: web::Data<Db>
+    db: web::Data<Db>,
+    user: crate::models::user::User
 ) -> impl Responder {
     info!("current_post()");
+
+    debug!("user authenticated: {:?}", user.is_authenticated());
 
     return HttpResponse::Ok()
         .json(ApiResponse {
