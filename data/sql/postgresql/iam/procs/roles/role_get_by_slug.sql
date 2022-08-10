@@ -1,4 +1,4 @@
-create or replace function role_get by_slug(
+create or replace function role_get_by_slug(
     p_slug iam.roles.slug%type
 )
 returns table (
