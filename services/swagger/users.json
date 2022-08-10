@@ -80,6 +80,22 @@
                     "suffix": ""
                 }
             },
+            "userGetRequest":{
+                "type":"object",
+                "required":[
+                    "id"
+                ],
+                "properties":{
+                    "id":{
+                        "type":"object",
+                        "format":"uuid",
+                        "readOnly":true
+                    }
+                },
+                "example":{
+                    "id":"47d7164a-fc10-4216-96c5-e2ad34ad66a4"
+                }
+            },
             "userSetActiveRequest": {
                 "type":"object",
                 "required":[
@@ -276,6 +292,34 @@
                         }
                     }
                 }
+            }
+        },
+        "/user/current": {
+            "summary": "get current user",
+            "post": {
+                "summary": "POST method get current user",
+                "tags": ["user"],
+                "operationId": "user_current",
+                "requestBody":{
+                    "required":false
+                },
+                "responses": {
+                    "200": {
+                        "description": "user authenticate",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         }
     }
