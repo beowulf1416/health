@@ -253,7 +253,7 @@ impl Users {
         &self,
         id: &uuid::Uuid
     ) -> Result<User, String> {
-        let query = "select * from iam.user_list($1, $2, $3);";
+        let query = "select * from iam.user_get($1);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
@@ -276,8 +276,8 @@ impl Users {
                         let email: String = r.get("email");
                         let given_name: String = r.get("given_name");
                         let family_name: String = r.get("family_name");
-                        let prefix: String = r.get("honorific_prefix");
-                        let suffix: String = r.get("honorific_suffix");
+                        let prefix: String = r.get("prefix");
+                        let suffix: String = r.get("suffix");
 
                         return Ok(User {
                             id: id,

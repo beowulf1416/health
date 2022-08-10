@@ -83,7 +83,7 @@ where
         let origin = HeaderValue::from_static("*");
         let fut = self.service.call(request);
 
-        Box::pin(async move {
+        return Box::pin(async move {
             let mut res = fut.await?;
             
             if !res.headers().contains_key(ACCESS_CONTROL_ALLOW_ORIGIN) {

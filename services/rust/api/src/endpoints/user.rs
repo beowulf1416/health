@@ -75,6 +75,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::post().to(authenticate_post))
         )
         .service(
+            web::resource("current")
+                .route(web::method(http::Method::OPTIONS).to(api_options))
+                .route(web::get().to(current_get))
+                .route(web::post().to(current_post))
+        )
+        .service(
             web::resource("add")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
                 .route(web::get().to(user_add_get))
@@ -167,6 +173,28 @@ async fn authenticate_post(
                 data: None
             });
     }
+}
+
+
+async fn current_get() -> impl Responder {
+    info!("current_get()");
+    return HttpResponse::Ok().body("use POST /current instead");
+}
+
+
+async fn current_post(
+    _request: HttpRequest,
+    jwt: web::Data<JWT>,
+    db: web::Data<Db>
+) -> impl Responder {
+    info!("current_post()");
+
+    return HttpResponse::Ok()
+        .json(ApiResponse {
+            success: true,
+            message: String::from("here"),
+            data: None
+        });
 }
 
 
