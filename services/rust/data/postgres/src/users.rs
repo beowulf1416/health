@@ -57,14 +57,13 @@ impl Users {
         info!("Users::add()");
         let query = "call iam.user_add($1, $2, $3, $4, $5, $6);";
 
-        let email_address = EmailAddress::new(String::from(email));
-
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
                 return Err(String::from("unable to add user"));
             }
             Ok(stmt) => {
+                let email_address = EmailAddress::new(String::from(email));
                 match self.client.execute(
                     &stmt,
                     &[
@@ -166,18 +165,18 @@ impl Users {
         email: &str,
         password: &str
     ) -> bool {
-        match self.client.prepare_cached(
-            "select * from iam.user_authenticate($1, $2)"
-        ).await {
+        let query = "select * from iam.user_authenticate($1, $2)";
+        match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
                 return false;
             }
             Ok(stmt) => {
+                let email_address = EmailAddress::new(String::from(email));
                 match self.client.query_one(
                     &stmt,
                     &[
-                        &email,
+                        &email_address,
                         &password
                     ]
                 ).await {
