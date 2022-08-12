@@ -204,6 +204,36 @@
                 }
             }
         },
+        "/user/get": {
+            "summary": "get user",
+            "post": {
+                "summary": "POST method to get user",
+                "tags": ["user"],
+                "operationId": "user_get",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "user active status set",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/set/active": {
             "summary": "set user active status",
             "post": {
