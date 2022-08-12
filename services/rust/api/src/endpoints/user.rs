@@ -68,8 +68,7 @@ struct UserSetPasswordRequest {
 
 #[derive(Serialize, Deserialize)]
 struct UserData {
-    pub email: String,
-    pub slug: String
+    pub email: String
 }
 
 
@@ -200,8 +199,7 @@ async fn current_post(
     // debug!("user authenticated: {:?}", user.is_authenticated());
 
     let user = UserData {
-        email: user.get_email(),
-        slug: user.get_slug()
+        email: user.get_email()
     };
 
     return HttpResponse::Ok()

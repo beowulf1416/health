@@ -128,7 +128,7 @@ where
             request.extensions_mut().insert(result);
 
             let fut = service.call(request);
-            let mut res = fut.await?;
+            let res = fut.await?;
             return Ok(res);
         })
     }
