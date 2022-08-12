@@ -45,7 +45,8 @@ impl ResponseError for UserError {
 #[derive(Clone)]
 pub struct User {
     id: Option<uuid::Uuid>,
-    email: String
+    email: String,
+    slug: String
 }
 
 
@@ -53,11 +54,13 @@ impl User {
 
     pub fn new(
         id: Option<uuid::Uuid>,
-        email: String
+        email: String,
+        slug: String
     ) -> Self {
         return Self {
             id: id,
-            email: email
+            email: email,
+            slug: slug
         };
     }
 
@@ -65,12 +68,16 @@ impl User {
         return self.id != None;
     }
 
-    pub fn id(&self) -> Option<uuid::Uuid> {
+    pub fn get_id(&self) -> Option<uuid::Uuid> {
         return self.id;
     }
 
-    pub fn email(&self) -> String {
+    pub fn get_email(&self) -> String {
         return self.email.clone();
+    }
+
+    pub fn get_slug(&self) -> String {
+        return self.slug.clone();
     }
 }
 

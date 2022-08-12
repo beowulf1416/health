@@ -24,6 +24,10 @@ use http::header::{
 };
 
 use jwt::JWT;
+use postgres::{
+    Db,
+    users::Users
+};
 
 
 pub struct User {}
@@ -83,26 +87,45 @@ where
         return Box::pin(async move {
             debug!("here 2");
 
+            let mut result = crate::models::user::User::new(
+                None,
+                String::from("invalid@test.com"),
+                String::from("slug")
+            );
+
             if let Some(header_value) = request.headers().get(AUTHORIZATION) {
                 let token = header_value.to_str().unwrap().replace("Bearer", "").trim().to_owned();
                 
                 let jwt = request.app_data::<web::Data<JWT>>().unwrap().clone();
                 if jwt.validate(&token) {
                     debug!("token valid");
-                    request.extensions_mut().insert(crate::models::user::User::new(
-                        None,
-                        String::from("testvalid@test.com")
-                    ));
+
+                    if let Ok(claims) = jwt.claims(&token) {
+                        let email = claims.email();
+
+                        if let Some(db) = request.app_data::<web::Data<Db>>() {
+                            if let Ok(client) = db.pool().get().await {
+                                let users = Users::new(client);
+                                if let Ok(user) = users.get_by_email(&email).await {
+                                    let user_id = user.id;
+
+                                    result = crate::models::user::User::new(
+                                        Some(user_id),
+                                        email,
+                                        String::from("slug")
+                                    );
+                                }
+                            }
+                        }
+                    }
                 } else {
                     debug!("token invalid");
-                    request.extensions_mut().insert(crate::models::user::User::new(
-                        None,
-                        String::from("testinvalid@test.com")
-                    ));
                 }
             } else {
                 debug!("no authorization header found");
             }
+
+            request.extensions_mut().insert(result);
 
             let fut = service.call(request);
             let mut res = fut.await?;

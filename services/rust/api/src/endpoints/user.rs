@@ -66,6 +66,13 @@ struct UserSetPasswordRequest {
 }
 
 
+#[derive(Serialize, Deserialize)]
+struct UserData {
+    pub email: String,
+    pub slug: String
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg
         .service(
@@ -190,13 +197,20 @@ async fn current_post(
 ) -> impl Responder {
     info!("current_post()");
 
-    debug!("user authenticated: {:?}", user.is_authenticated());
+    // debug!("user authenticated: {:?}", user.is_authenticated());
+
+    let user = UserData {
+        email: user.get_email(),
+        slug: user.get_slug()
+    };
 
     return HttpResponse::Ok()
         .json(ApiResponse {
             success: true,
             message: String::from("here"),
-            data: None
+            data: Some(json!({
+                "user": user
+            }))
         });
 }
 
