@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { TitleService } from 'src/app/services/title.service';
 import { DomainService } from '../../services/domain.service';
@@ -23,12 +24,16 @@ export class DomainComponent implements OnInit {
 
   constructor(
     private title: TitleService,
-    private domain_service: DomainService
+    private domain_service: DomainService,
+    private route: ActivatedRoute
   ) { 
     title.set_title('Domain');
   }
 
   ngOnInit(): void {
+    const slug = this.route.snapshot.paramMap.get('slug');
+
+    // this.domain_service.get()
   }
 
   get name() {

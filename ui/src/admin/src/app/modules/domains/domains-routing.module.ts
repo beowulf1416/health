@@ -9,11 +9,15 @@ const routes: Routes = [
     component: DomainListComponent
   },
   {
-    path: 'view',
+    path: 'add',
     component: DomainComponent
   },
   {
-    path: 'add',
+    path: 'view/:slug',
+    component: DomainComponent
+  },
+  {
+    path: 'edit/:slug',
     component: DomainComponent
   }
 ];
