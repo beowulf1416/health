@@ -22,7 +22,7 @@ use serde_json::json;
 // use jwt::JWT;
 
 use postgres::{ 
-    Db,
+    // Db,
     domains::Domains
 };
 

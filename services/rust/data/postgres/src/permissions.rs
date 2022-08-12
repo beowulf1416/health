@@ -8,9 +8,9 @@ use deadpool_postgres::{
     Manager
 };
 
-use actix_web::{
-    HttpResponse
-};
+// use actix_web::{
+//     HttpResponse
+// };
 
 // use crate::Db;
 
