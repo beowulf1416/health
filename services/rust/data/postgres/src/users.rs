@@ -293,4 +293,51 @@ impl Users {
             }
         }
     }
+
+
+    pub async fn get_by_email(
+        &self,
+        email: &str
+    ) -> Result<User, String> {
+        let query = "select * from iam.user_get_by_email($1);";
+        match self.client.prepare_cached(query).await {
+            Err(e) => {
+                error!("unable to prepare statement: {:?}", e);
+                return Err(String::from("unable to retrieve user"));
+            }
+            Ok(stmt) => {
+                let email_address = EmailAddress::new(String::from(email));
+                match self.client.query_one(
+                    &stmt,
+                    &[
+                        &email_address
+                    ]
+                ).await {
+                    Err(e) => {
+                        error!("an error occured while executing the statement: {:?}", e);
+                        return Err(String::from("unable to retrieve list of users"));
+                    }
+                    Ok(r) => {
+                        let id: uuid::Uuid = r.get("id");
+                        let active: bool = r.get("active");
+                        let email: String = r.get("email");
+                        let given_name: String = r.get("given_name");
+                        let family_name: String = r.get("family_name");
+                        let prefix: String = r.get("prefix");
+                        let suffix: String = r.get("suffix");
+
+                        return Ok(User {
+                            id: id,
+                            active: active,
+                            email: email,
+                            given_name: given_name,
+                            family_name: family_name,
+                            prefix: prefix,
+                            suffix: suffix
+                        });
+                    }
+                }
+            }
+        }
+    }
 }
