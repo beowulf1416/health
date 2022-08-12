@@ -11,10 +11,14 @@ create table users (
     honorific_prefix varchar(100),
     honorific_suffix varchar(100),
 
+    slug common.slug_text not null,
+
     constraint pk_users
         primary key (id),
     constraint u_users_1
-        unique (email)
+        unique (email),
+    constraint u_users_2
+        unique (slug)
 );
 
 comment on table users is 'table of user accounts';
