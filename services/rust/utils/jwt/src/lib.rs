@@ -21,6 +21,17 @@ use chrono::prelude::*;
 use std::clone::Clone;
 
 
+pub struct Claims {
+    email: String
+}
+
+impl Claims {
+    pub fn email(&self) -> String {
+        return self.email.clone();
+    }
+}
+
+
 #[derive(Clone)]
 pub struct JWT {
     secret: String
@@ -28,7 +39,8 @@ pub struct JWT {
 
 
 pub enum JWTError {
-    UnableToSign
+    UnableToSign,
+    UnableToGetClaims
 }
 
 
@@ -73,10 +85,29 @@ impl JWT {
         let result: Result<BTreeMap<String, String>, Error> = token.verify_with_key(&key);
         
         if let Err(e) = result {
-            error!("JWT::validate() {:?}", e);
             return false;
         } else {
             return true;
+        }
+    }
+
+    pub fn claims(
+        &self,
+        token: &String
+    ) -> Result<Claims, JWTError> {
+        let key: Hmac<Sha256> = Hmac::new_from_slice(self.secret.as_bytes()).unwrap();
+        let result: Result<BTreeMap<String, String>, Error> = token.verify_with_key(&key);
+
+        match result {
+            Err(e) => {
+                error!("unable to retrieve claims: {:?}", e);
+                return Err(JWTError::UnableToGetClaims);
+            }
+            Ok(claims) => {
+                return Ok(Claims {
+                    email: claims["email"].clone()
+                });
+            }
         }
     }
 }
