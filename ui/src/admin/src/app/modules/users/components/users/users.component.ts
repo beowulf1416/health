@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
     family_name: new FormControl('', [
       Validators.required
     ]),
-    prefix: new FormControl(''. []),
+    prefix: new FormControl('', []),
     suffix: new FormControl('', []),
     email: new FormControl('', [
       Validators.required,

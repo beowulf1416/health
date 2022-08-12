@@ -21,6 +21,7 @@ export const environment = {
   path_user_set_active: '/user/set/active',
   path_user_set_password: '/user/set/password',
   path_user_update: '/user/update',
+  path_user_current: '/user/current',
 
   path_role_add: '/role/add',
   path_role_get: '/role/get',

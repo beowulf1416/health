@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/material/material.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
+import { httpInterceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,7 +7,19 @@
 // }
 
 export interface ApiResponse {
-    status: boolean;
+    success: boolean;
     message: string;
     data: JSON | null
+}
+
+export function newApiResponse(
+    success: boolean,
+    message: string,
+    data: JSON | null
+) : ApiResponse {
+  return {
+    success: success,
+    message: message,
+    data: data
+  };  
 }

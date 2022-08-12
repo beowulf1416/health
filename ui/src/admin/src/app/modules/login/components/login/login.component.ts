@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TitleService } from 'src/app/services/title.service';
 import { UserService } from '../../services/user.service';
 
@@ -22,12 +23,16 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private title: TitleService,
-    private user: UserService
+    private user: UserService,
+    private router: Router
   ) {
     title.set_title('Login');
   }
 
   ngOnInit(): void {
+    if (this.user.isLoggedIn()) {
+      this.router.navigate(['']);
+    }
   }
 
   get email() {
@@ -47,9 +52,9 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('pw')?.value || ''
       ).subscribe(r => {
         if (r) {
-
+          this.router.navigate(['']);
         } else {
-
+          this.password?.reset();
         }
       });
     }
