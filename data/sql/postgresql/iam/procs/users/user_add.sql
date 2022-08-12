@@ -4,8 +4,7 @@ create or replace procedure user_add(
     p_given_name iam.users.given_name%type,
     p_family_name iam.users.family_name%type,
     p_prefix iam.users.honorific_prefix%type,
-    p_suffix iam.users.honorific_suffix%type,
-    p_slug iam.users.slug%type
+    p_suffix iam.users.honorific_suffix%type
 )
 language plpgsql
 as $$
@@ -24,8 +23,7 @@ begin
         given_name,
         family_name,
         honorific_prefix,
-        honorific_suffix,
-        slug
+        honorific_suffix
     ) values (
         p_id,
         p_email,
@@ -33,8 +31,7 @@ begin
         p_given_name,
         p_family_name,
         p_prefix,
-        p_suffix,
-        p_slug
+        p_suffix
     );
 end
 $$;

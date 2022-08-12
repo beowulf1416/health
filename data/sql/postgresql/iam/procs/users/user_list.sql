@@ -10,8 +10,7 @@ returns table (
     given_name iam.users.given_name%type,
     family_name iam.users.family_name%type,
     prefix iam.users.honorific_prefix%type,
-    suffix iam.users.honorific_suffix%type,
-    slug iam.users.slug%type
+    suffix iam.users.honorific_suffix%type
 )
 language plpgsql
 as $$
@@ -25,8 +24,7 @@ begin
             a.given_name,
             a.family_name,
             a.honorific_prefix,
-            a.honorific_suffix,
-            a.slug
+            a.honorific_suffix
         from iam.users a
         order by
             a.email
@@ -42,8 +40,7 @@ begin
             a.given_name,
             a.family_name,
             a.honorific_prefix,
-            a.honorific_suffix,
-            a.slug
+            a.honorific_suffix
         from iam.users a
         where
             concat_ws(
