@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { ApiResponse } from 'src/app/classes/api-response';
+import { User } from 'src/app/classes/user';
 import { TitleService } from 'src/app/services/title.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -10,17 +12,18 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomeComponent implements OnInit {
 
+  user_subject = new Subject<User>();
+  user$ = this.user_subject.asObservable();
+
   constructor(
     private title: TitleService,
     private user_service: UserService
   ) { }
 
   ngOnInit(): void {
-    if (this.user_service.is_logged_in()) {
-      this.user_service.get_current_user().subscribe((r: ApiResponse) => {
-        console.log(r);
-      });
-    }
+    this.user_service.get_current_user().subscribe((user: User) => {
+      this.user_subject.next(user);
+    });
   }
 
 }
