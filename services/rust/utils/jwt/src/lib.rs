@@ -84,9 +84,18 @@ impl JWT {
 
 #[cfg(test)]
 mod tests {
+
+    use log::debug;
+    use crate::JWT;
+
     #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    fn test_generate() {
+        let jwt = JWT::new(String::from("test"));
+        if let Ok(token) = jwt.generate(&String::from("test@test.com")) {
+            debug!("token: {:?}", token);
+            assert!(true, "token generated");
+        } else {
+            assert!(false, "token not generated");
+        }
     }
 }
