@@ -89,8 +89,7 @@ where
 
             let mut result = crate::models::user::User::new(
                 None,
-                String::from("invalid@test.com"),
-                String::from("slug")
+                String::from("")
             );
 
             if let Some(header_value) = request.headers().get(AUTHORIZATION) {
@@ -111,8 +110,7 @@ where
 
                                     result = crate::models::user::User::new(
                                         Some(user_id),
-                                        email,
-                                        String::from("slug")
+                                        email
                                     );
                                 }
                             }

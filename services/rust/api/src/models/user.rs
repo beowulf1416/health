@@ -53,8 +53,7 @@ impl User {
 
     pub fn new(
         id: Option<uuid::Uuid>,
-        email: String,
-        slug: String
+        email: String
     ) -> Self {
         return Self {
             id: id,

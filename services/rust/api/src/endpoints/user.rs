@@ -205,7 +205,7 @@ async fn current_post(
     return HttpResponse::Ok()
         .json(ApiResponse {
             success: true,
-            message: String::from("here"),
+            message: String::from("retrieved current user"),
             data: Some(json!({
                 "user": user
             }))
