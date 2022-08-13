@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('email')?.value || '',
         this.loginForm.get('pw')?.value || ''
       ).subscribe(r => {
-        if (r) {
+        if (r.success) {
           this.router.navigate(['']);
         } else {
           this.password?.reset();

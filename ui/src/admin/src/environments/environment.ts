@@ -7,7 +7,9 @@ export const environment = {
 
   key_session_token: 'token',
   url_base: 'http://localhost:8081',
+
   path_authenticate: '/user/authenticate',
+  path_sign_out: '/user/signout',
 
   path_domain_add: '/domain/add',
   path_domain_get: '/domain/get',

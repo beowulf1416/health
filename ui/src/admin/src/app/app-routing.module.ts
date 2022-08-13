@@ -9,6 +9,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/login/login.module').then( m => m.LoginModule)
   },
   {
+    path: 'user/logout',
+    loadChildren: () => import('./modules/logout/logout.module').then( m => m.LogoutModule)
+  },
+  {
     path: 'domains',
     loadChildren: () => import('./modules/domains/domains.module').then( m => m.DomainsModule)
   },

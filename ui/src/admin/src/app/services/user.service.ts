@@ -96,4 +96,8 @@ export class UserService {
       })
     );
   }
+
+  logout() {
+    sessionStorage.removeItem(environment.key_session_token);
+  }
 }
