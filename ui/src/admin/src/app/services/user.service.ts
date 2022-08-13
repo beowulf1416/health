@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResponse, newApiResponse } from '../classes/api-response';
 import { User } from '../classes/user';
@@ -17,44 +17,53 @@ import { User } from '../classes/user';
 // };
 
 
-export function JSONtoUser(
-  json: JSON
-): User {
-  const sz = JSON.stringify(json);
-  const o = JSON.parse(sz);
-  const u = o.user as User;
-  return u;
-}
+// https://github.com/gothinkster/angular-realworld-example-app/blob/master/src/app/core/services/user.service.ts
+
+// export function JSONtoUser(
+//   json: JSON
+// ): User {
+//   const sz = JSON.stringify(json);
+//   const o = JSON.parse(sz);
+//   const u = o.user as User;
+//   return u;
+// }
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  // user_subject = new Subject<User>();
-  // user$ = this.user_subject.asObservable();
+  user_subject = new BehaviorSubject<User>(new User(''));
+  user$ = this.user_subject.asObservable();
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) { 
+    const token = sessionStorage.getItem(environment.key_session_token);
+    if (token != null) {
+      this._get_current_user().subscribe((r: ApiResponse) => {
+        console.log(r);
+      });
+    }
+  }
 
-  get_current_user(): Observable<User> {
+  get current_user(): Observable<User> {
+    return this.user$;
+  }
+
+  _get_current_user(): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
       environment.url_base + environment.path_user_current,
       {}
     ).pipe(
-      map((r: ApiResponse) => {
-        // console.log(r.data);
+      filter((r: ApiResponse) => r.success === true),
+      tap((r: ApiResponse) => {
+        
+        const sz = JSON.stringify(r.data);
+        const o = JSON.parse(sz);
+        const u = o.user;
 
-        let u = new User("");
-
-        if (r.data != null && r.data.hasOwnProperty("user")) {
-          const udata = (r.data as any)?.user;
-          
-          u = new User(udata?.email || "");
-        }
-
-        return u;
+        this.user_subject.next(new User(u?.email));
       })
     );
   }
@@ -83,16 +92,26 @@ export class UserService {
           }
         }
       }),
-      map(r => {
-        if (r.body == null) {
-          return newApiResponse(
-            false,
-            "unknown error",
-            null
-          );
-        } else {
-          return r.body;
-        };
+      filter((r: HttpResponse<ApiResponse>) => { console.log(r); return r.body?.success === true; }),
+      switchMap((r: any) => {
+        console.log(r);
+
+        // return this.http.post<ApiResponse>(
+        //   environment.url_base + environment.path_user_current,
+        //   {}
+        // ).pipe(
+        //   filter((r: ApiResponse) => r.success === true),
+        //   tap((r: ApiResponse) => {
+            
+        //     const sz = JSON.stringify(r.data);
+        //     const o = JSON.parse(sz);
+        //     const u = o.user;
+
+        //     this.user_subject.next(new User(u?.email));
+        //   })
+        // );
+
+        return this._get_current_user();
       })
     );
   }

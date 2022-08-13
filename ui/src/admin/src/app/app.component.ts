@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { User } from './classes/user';
 import { UserService } from './services/user.service';
 
@@ -10,17 +10,21 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit  {
   
-  user_subject = new Subject<User>();
-  user$ = this.user_subject.asObservable();
+  // user_subject = new Subject<User>();
+  // user$ = this.user_subject.asObservable();
 
   constructor(
     private user_service: UserService
   ) {}
 
   ngOnInit(): void {
-    this.user_service.get_current_user().subscribe((user: User) => {
-      this.user_subject.next(user);
-    });
+    // this.user_service.get_current_user().subscribe((user: User) => {
+    //   this.user_subject.next(user);
+    // });
+  }
+
+  get user$(): Observable<User> {
+    return this.user_service.user$;
   }
 
 }

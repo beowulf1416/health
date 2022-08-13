@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user_service.get_current_user().subscribe((user: User) => {
+    this.user_service.current_user.subscribe((user: User) => {
       this.user_subject.next(user);
     });
   }
