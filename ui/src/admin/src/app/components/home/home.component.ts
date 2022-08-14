@@ -12,8 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  user_subject = new Subject<User>();
-  user$ = this.user_subject.asObservable();
+  // user_subject = new Subject<User>();
+  // user$ = this.user_subject.asObservable();
 
   constructor(
     private title: TitleService,
@@ -21,9 +21,13 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user_service.current_user.subscribe((user: User) => {
-      this.user_subject.next(user);
-    });
+    // this.user_service.current_user.subscribe((user: User) => {
+    //   this.user_subject.next(user);
+    // });
+  }
+
+  get user$(): Observable<User> {
+    return this.user_service.user$;
   }
 
 }

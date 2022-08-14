@@ -67,14 +67,11 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('email')?.value || '',
         this.loginForm.get('pw')?.value || ''
       ).subscribe(r => {
-
-        console.log(r);
-
-        // if (r.success) {
-        //   this.router.navigate(['']);
-        // } else {
-        //   this.password?.reset();
-        // }
+        if (r.success) {
+          this.router.navigate(['']);
+        } else {
+          this.password?.reset();
+        }
 
         this.is_submitting = false;
       });
