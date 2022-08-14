@@ -19,7 +19,7 @@ use serde::{
 };
 use serde_json::json;
 
-use jwt::JWT;
+use token::JWT;
 
 use postgres::{ 
     Db,

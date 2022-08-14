@@ -19,5 +19,5 @@ actix-http = "*"
 
 uuid = { version = "0.8.2", features = ["v4", "serde"] }
 
-jwt = { path = "../utils/jwt" }
+token = { path = "../utils/token" }
 postgres = { path = "../data/postgres" }

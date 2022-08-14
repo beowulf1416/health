@@ -23,7 +23,7 @@ use http::header::{
     AUTHORIZATION
 };
 
-use jwt::JWT;
+use token::JWT;
 use postgres::{
     Db,
     users::Users

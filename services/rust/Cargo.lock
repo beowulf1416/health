@@ -87,6 +87,7 @@ version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ea16c295198e958ef31930a6ef37d0fb64e9ca3b6116e6b93a8bdae96ee1000"
 dependencies = [
+ "actix-macros",
  "futures-core",
  "tokio",
 ]
@@ -251,11 +252,11 @@ dependencies = [
  "env_logger",
  "futures",
  "http",
- "jwt 0.1.0",
  "log",
  "postgres",
  "serde",
  "serde_json",
+ "token",
  "uuid",
 ]
 
@@ -778,18 +779,6 @@ dependencies = [
 
 [[package]]
 name = "jwt"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "hmac",
- "jwt 0.16.0",
- "log",
- "serde",
- "sha2",
-]
-
-[[package]]
-name = "jwt"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6204285f77fe7d9784db3fdc449ecce1a0114927a51d5a41c4c7a292011c015f"
@@ -1013,11 +1002,14 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 name = "postgres"
 version = "0.1.0"
 dependencies = [
+ "actix-rt",
  "actix-web",
  "deadpool",
  "deadpool-postgres",
+ "env_logger",
  "log",
  "postgres-types",
+ "rand",
  "serde",
  "tokio-postgres",
  "uuid",
@@ -1405,6 +1397,18 @@ name = "tinyvec_macros"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
+
+[[package]]
+name = "token"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "hmac",
+ "jwt",
+ "log",
+ "serde",
+ "sha2",
+]
 
 [[package]]
 name = "tokio"

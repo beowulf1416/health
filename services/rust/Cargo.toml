@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "utils/jwt",
+    "utils/token",
     "data/postgres",
     "api"
 ]

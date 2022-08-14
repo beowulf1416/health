@@ -37,7 +37,7 @@ async fn main() -> std::io::Result<()> {
             // .service(web::scope("/tenants").configure(crate::endpoints::tenants::config))
             // .service(web::scope("/admin/tenants").configure(crate::endpoints::tenant::admin::config))
             // .route("/status", web::get().to(crate::endpoints::status_get))
-            .configure(crate::services::jwt::configure)
+            .configure(crate::services::token::configure)
             .configure(crate::services::db::configure)
             .wrap(crate::middleware::cors::CORS::new())
             .wrap(crate::middleware::user::User::new())
