@@ -24,6 +24,12 @@ use tokio_postgres::NoTls;
 use tokio_postgres::config::{ Config };
 
 
+pub enum DbError {
+    ClientError,
+    DuplicateKeyError
+}
+
+
 #[derive(Clone)]
 pub struct Db {
     // client: Object<Manager>
@@ -70,11 +76,30 @@ impl Db {
 }
 
 
-// #[cfg(test)]
-// mod tests {
-//     #[test] 
-//     fn it_works() {
-//         let result = 2 + 2;
-//         assert_eq!(result, 4);
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use log::{ debug, error };
+
+    use std::env;
+
+    use std::sync::Once;
+    static INIT: Once = Once::new();
+
+    use crate::Db;
+
+
+    fn initialize() {
+        INIT.call_once( || {
+            env_logger::init();
+        });
+    }
+
+    #[test] 
+    fn test_create() {
+        initialize();
+
+        if let Err(_) = Db::new(env::var("URL_DB").unwrap()) {
+            assert!(false);
+        }
+    }
+}

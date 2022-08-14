@@ -285,3 +285,47 @@ impl Domains {
         }
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use log::{ debug, error };
+
+    use std::env;
+
+    use std::sync::Once;
+    static INIT: Once = Once::new();
+
+    use deadpool_postgres::{ Manager };
+    use deadpool::managed::Object;
+
+    use crate::{
+        Db,
+        DbError
+    };
+
+    fn initialize() {
+        INIT.call_once( || {
+            env_logger::init();
+        });
+    }
+
+
+    async fn get_client() -> Result<Object<Manager>, DbError>  {
+        if let Ok(db) = Db::new(env::var("URL_DB").unwrap()) {
+            if let Ok(client) = db.pool().get().await {
+                return Ok(client);
+            }
+        }
+        return DbError::ClientError;
+    }
+
+
+    #[test] 
+    fn test_add() {
+        if let Ok(client) = get_client() {
+            let domains = Domains::new(client);
+        }
+        assert(false);
+    }
+}
