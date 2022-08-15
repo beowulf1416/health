@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { TitleService } from 'src/app/services/title.service';
 import { DomainService } from '../../services/domain.service';
@@ -11,6 +11,8 @@ import { DomainService } from '../../services/domain.service';
   styleUrls: ['./domain.component.css']
 })
 export class DomainComponent implements OnInit {
+
+  is_submitting = false;
 
   domainForm = new FormGroup({
     name: new FormControl('', [
@@ -25,7 +27,8 @@ export class DomainComponent implements OnInit {
   constructor(
     private title: TitleService,
     private domain_service: DomainService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { 
     title.set_title('Domain');
   }
@@ -49,14 +52,21 @@ export class DomainComponent implements OnInit {
   }
  
   submit() {
-    console.log('DomainComponent::submit()');
-
     if (this.domainForm.valid) {
+      this.is_submitting = true;
+
       this.domain_service.add(
         this.domainForm.get('name')?.value || '',
         this.domainForm.get('slug')?.value || ''
       ).subscribe((r: ApiResponse) => {
-        console.log(r);
+        // console.log(r);
+        if (r.success) {
+          this.router.navigate(["list"]);
+        } else {
+          console.error(r.message);
+        }
+
+        this.is_submitting = false;
       });
     }
   }

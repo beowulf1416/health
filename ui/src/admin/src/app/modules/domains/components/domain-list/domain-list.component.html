@@ -1,3 +1,8 @@
+<nav>
+    <ul>
+        <li><a title="Add Domain" routerLink="add">Add</a></li>
+    </ul>
+</nav>
 <div class="component-domain-list">
     <table>
         <caption>Domains</caption>
@@ -11,6 +16,16 @@
             <tr>
                 <th>Name</th>
                 <th>Actions</th>
+            </tr>
+            <tr>
+                <td>
+                    <form class="form-filter" [formGroup]="filterForm" (ngSubmit)="submit()">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input type="text" id="filter" name="filter" class="field-filter" matInput formControlName="filter" />
+                        </mat-form-field>
+                    </form>
+                </td>
             </tr>
         </tfoot>
         <tbody>
