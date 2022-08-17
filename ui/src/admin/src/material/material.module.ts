@@ -11,6 +11,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
     exports: [
@@ -24,7 +25,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         MatExpansionModule,
         MatMenuModule,
         MatBadgeModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatPaginatorModule
     ]
 })
 export class MaterialModule {}
