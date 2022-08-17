@@ -292,16 +292,20 @@ mod tests {
     use log::{ debug, error };
 
     use std::env;
-
     use std::sync::Once;
     static INIT: Once = Once::new();
 
     use deadpool_postgres::{ Manager };
     use deadpool::managed::Object;
 
+    use rand::Rng;
+
+    use uuid::Uuid;
+
     use crate::{
         Db,
-        DbError
+        DbError,
+        domains::Domains
     };
 
     fn initialize() {
@@ -317,15 +321,32 @@ mod tests {
                 return Ok(client);
             }
         }
-        return DbError::ClientError;
+        return Err(DbError::ClientError);
     }
 
 
-    #[test] 
-    fn test_add() {
-        if let Ok(client) = get_client() {
+    #[actix_rt::test] 
+    async fn test_add() {
+        if let Ok(client) = get_client().await {
+            let domain_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+            let domain_name = format!("domain{}", suffix);
+
+            let domain_slug = format!("domain_slug_{}", suffix);
+
             let domains = Domains::new(client);
+            if let Err(e) = domains.add(
+                &domain_id,
+                &domain_name,
+                &domain_slug
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            }
+        } else {
+            assert!(false);
         }
-        assert(false);
     }
 }
