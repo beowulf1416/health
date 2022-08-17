@@ -277,12 +277,14 @@ impl Domains {
                 return Err(String::from("unable to prepare statement"));
             }
             Ok(stmt) => {
+                let slug_text = Slug::new(String::from(slug));
+
                 match self.client.execute(
                     &stmt,
                     &[
                         &id,
                         &name,
-                        &slug
+                        &slug_text
                     ]
                 ).await {
                     Err(e) => {
@@ -446,6 +448,42 @@ mod tests {
                 if let Err(e) = domains.set_active(
                     &domain_id, 
                     &active
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert!(false);
+                }
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+    #[actix_rt::test] 
+    async fn test_update() {
+        if let Ok(client) = get_client().await {
+            let domain_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+            let domain_name = format!("domain{}", suffix);
+            let domain_slug = format!("domain_slug_{}", suffix);
+            
+            let domain_name_update = format!("{}_update", domain_name);
+            let domain_slug_update = format!("{}_udpate", domain_slug);
+
+            let domains = Domains::new(client);
+            if let Err(e) = domains.add(
+                &domain_id,
+                &domain_name,
+                &domain_slug
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            } else {
+                if let Err(e) = domains.update(
+                    &domain_id, 
+                    &domain_name_update,
+                    &domain_slug_update
                 ).await {
                     error!("ERROR: {:?}", e);
                     assert!(false);
