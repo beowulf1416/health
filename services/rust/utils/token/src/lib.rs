@@ -85,6 +85,7 @@ impl JWT {
         let result: Result<BTreeMap<String, String>, Error> = token.verify_with_key(&key);
         
         if let Err(e) = result {
+            error!("unable to validate token: {:?}", e);
             return false;
         } else {
             return true;
