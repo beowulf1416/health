@@ -341,6 +341,8 @@ mod tests {
 
     #[actix_rt::test] 
     async fn test_add() {
+        // initialize();
+
         if let Ok(client) = get_client().await {
             let domain_id = Uuid::new_v4();
 
@@ -366,6 +368,8 @@ mod tests {
 
     #[actix_rt::test] 
     async fn test_add_duplicate() {
+        // initialize();
+
         if let Ok(client) = get_client().await {
             let domain_id = Uuid::new_v4();
 
@@ -426,6 +430,8 @@ mod tests {
 
     #[actix_rt::test] 
     async fn test_set_active() {
+        // initialize();
+
         if let Ok(client) = get_client().await {
             let domain_id = Uuid::new_v4();
 
@@ -460,6 +466,8 @@ mod tests {
 
     #[actix_rt::test] 
     async fn test_update() {
+        // initialize();
+
         if let Ok(client) = get_client().await {
             let domain_id = Uuid::new_v4();
 

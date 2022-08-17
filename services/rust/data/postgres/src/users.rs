@@ -392,6 +392,8 @@ mod tests {
     
     #[actix_rt::test] 
     async fn test_add() {
+        // initialize();
+
         if let Ok(client) = get_client().await {
             let user_id = Uuid::new_v4();
 
@@ -415,6 +417,110 @@ mod tests {
             ).await {
                 error!("ERROR: {:?}", e);
                 assert!(false);
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+
+    #[actix_rt::test] 
+    async fn test_add_duplicate() {
+        // initialize();
+
+        if let Ok(client) = get_client().await {
+            let user_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+
+            let email = format!("email{}@email.com", suffix);
+            let gn = format!("given{}", suffix);
+            let ln = format!("last{}", suffix);
+            let p = format!("prefix{}", suffix);
+            let s = format!("suffix{}", suffix);
+
+            let users = Users::new(client);
+            if let Err(e) = users.add(
+                &user_id,
+                &email,
+                &gn,
+                &ln,
+                &p,
+                &s
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            } else {
+                let user_id_2 = Uuid::new_v4();
+                let email_2 = format!("email{}duplicate@email.com", suffix);
+
+                if let Err(e) = users.add(
+                    &user_id,
+                    &email_2,
+                    &gn,
+                    &ln,
+                    &p,
+                    &s
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert_eq!(DbError::DuplicateKeyError,e);
+                }
+
+                if let Err(e) = users.add(
+                    &user_id_2,
+                    &email,
+                    &gn,
+                    &ln,
+                    &p,
+                    &s
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert_eq!(DbError::DuplicateKeyError,e);
+                }
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+
+    #[actix_rt::test] 
+    async fn test_set_password() {
+        // initialize();
+
+        if let Ok(client) = get_client().await {
+            let user_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+
+            let email = format!("email{}@email.com", suffix);
+            let gn = format!("given{}", suffix);
+            let ln = format!("last{}", suffix);
+            let p = format!("prefix{}", suffix);
+            let s = format!("suffix{}", suffix);
+
+            let users = Users::new(client);
+            if let Err(e) = users.add(
+                &user_id,
+                &email,
+                &gn,
+                &ln,
+                &p,
+                &s
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            } else {
+                let pw = String::from("newPassword");
+                if let Err(e) = users.set_password(
+                    &user_id,
+                    &pw
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert!(false);
+                }
             }
         } else {
             assert!(false);
