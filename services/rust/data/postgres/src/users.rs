@@ -7,6 +7,9 @@ use deadpool::managed::Object;
 use deadpool_postgres::{ 
     Manager
 };
+use tokio_postgres::{
+    error::SqlState
+};
 
 // use actix_web::{
 //     HttpResponse
@@ -15,7 +18,7 @@ use deadpool_postgres::{
 use serde::{ Serialize, Deserialize };
 
 use crate::{
-    // Db,
+    DbError,
     email::EmailAddress
 };
 
@@ -53,14 +56,14 @@ impl Users {
         family_name: &str,
         prefix: &str,
         suffix: &str
-    ) -> Result<(), String> {
+    ) -> Result<(), DbError> {
         info!("Users::add()");
         let query = "call iam.user_add($1, $2, $3, $4, $5, $6);";
 
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return Err(String::from("unable to add user"));
+                return Err(DbError::ClientError);
             }
             Ok(stmt) => {
                 let email_address = EmailAddress::new(String::from(email));
@@ -77,7 +80,13 @@ impl Users {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {:?}", e);
-                        return Err(String::from("unable to add user"));
+                        // return Err(String::from("unable to add user"));
+                        if let Some(code) = e.code() {
+                            if matches!(SqlState::UNIQUE_VIOLATION, code) {
+                                return Err(DbError::DuplicateKeyError);
+                            }
+                        }
+                        return Err(DbError::ClientError);
                     }
                     Ok(_rows_modified) => {
                         return Ok(());
@@ -338,6 +347,77 @@ impl Users {
                     }
                 }
             }
+        }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use log::{ debug, error };
+
+    use std::env;
+    use std::sync::Once;
+    static INIT: Once = Once::new();
+
+    use deadpool_postgres::{ Manager };
+    use deadpool::managed::Object;
+
+    use rand::Rng;
+
+    use uuid::Uuid;
+
+    use crate::{
+        Db,
+        DbError,
+        users::Users
+    };
+
+    fn initialize() {
+        INIT.call_once( || {
+            env_logger::init();
+        });
+    }
+
+
+    async fn get_client() -> Result<Object<Manager>, DbError>  {
+        if let Ok(db) = Db::new(env::var("URL_DB").unwrap()) {
+            if let Ok(client) = db.pool().get().await {
+                return Ok(client);
+            }
+        }
+        return Err(DbError::ClientError);
+    }
+    
+    
+    #[actix_rt::test] 
+    async fn test_add() {
+        if let Ok(client) = get_client().await {
+            let user_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+
+            let email = format!("email{}@email.com", suffix);
+            let gn = format!("given{}", suffix);
+            let ln = format!("last{}", suffix);
+            let p = format!("prefix{}", suffix);
+            let s = format!("suffix{}", suffix);
+
+            let users = Users::new(client);
+            if let Err(e) = users.add(
+                &user_id,
+                &email,
+                &gn,
+                &ln,
+                &p,
+                &s
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            }
+        } else {
+            assert!(false);
         }
     }
 }
