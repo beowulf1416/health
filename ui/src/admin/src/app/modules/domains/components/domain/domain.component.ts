@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from 'src/app/classes/api-response';
 import { TitleService } from 'src/app/services/title.service';
+import { UserService } from 'src/app/services/user.service';
 import { DomainService } from '../../services/domain.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class DomainComponent implements OnInit {
   constructor(
     private title: TitleService,
     private domain_service: DomainService,
+    private user_service: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) { 

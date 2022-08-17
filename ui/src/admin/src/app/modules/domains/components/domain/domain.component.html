@@ -3,7 +3,7 @@
         <form class="form-domain" [formGroup]="domainForm" (ngSubmit)="submit()">
             <fieldset>
                 <legend>Information</legend>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class=".form-field-block">
                     <mat-label>Name</mat-label>
                     <input type="text" id="name" name="name" class="field-name" required matInput formControlName="name" />
                     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
@@ -14,7 +14,7 @@
                         </mat-error>
                     </div><!-- .field-errors -->
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class=".form-field-block">
                     <mat-label>Slug</mat-label>
                     <input type="text" id="slug" name="slug" class="field-slug" required matInput formControlName="slug" />
                     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
