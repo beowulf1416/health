@@ -7,6 +7,9 @@ use deadpool::managed::Object;
 use deadpool_postgres::{ 
     Manager
 };
+use tokio_postgres::{
+    error::SqlState
+};
 
 // use actix_web::{
 //     HttpResponse
@@ -15,7 +18,7 @@ use deadpool_postgres::{
 use serde::{ Serialize, Deserialize };
 
 use crate::{
-    // Db,
+    DbError,
     slug::Slug
 };
 
@@ -46,14 +49,15 @@ impl Domains {
         id: &uuid::Uuid,
         name: &str,
         slug: &str
-    ) -> Result<(), String> {
+    ) -> Result<(), DbError> {
         info!("Domains::add()");
 
         let query = "call domain.domain_add($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {} {:?}", query, e);
-                return Err(String::from("unable to prepare statement"));
+                // return Err(String::from("unable to prepare statement"));
+                return Err(DbError::ClientError);
             }
             Ok(stmt) => {
                 let slug_text = Slug::new(String::from(slug));
@@ -68,7 +72,13 @@ impl Domains {
                 ).await {
                     Err(e) => {
                         error!("unable to execute query: {:?}", e);
-                        return Err(String::from("unable to execute query"));
+                        // return Err(String::from("unable to execute query"));
+                        if let Some(code) = e.code() {
+                            if matches!(SqlState::UNIQUE_VIOLATION, code) {
+                                return Err(DbError::DuplicateKeyError);
+                            }
+                        }
+                        return Err(DbError::ClientError);
                     }
                     Ok(_) => {
                         info!("successfully executed query: {}", query);
@@ -220,14 +230,15 @@ impl Domains {
         &self,
         id: &uuid::Uuid,
         active: &bool
-    ) -> Result<(), String> {
+    ) -> Result<(), DbError> {
         info!("Domains::set_active()");
 
         let query = "call domain.domain_set_active($1, $2);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return Err(String::from("unable to prepare statement"));
+                // return Err(String::from("unable to prepare statement"));
+                return Err(DbError::ClientError);
             }
             Ok(stmt) => {
                 match self.client.execute(
@@ -239,7 +250,8 @@ impl Domains {
                 ).await {
                     Err(e) => {
                         error!("unable to set domain active status : {:?}", e);
-                        return Err(String::from("unable to set domain active status"));
+                        // return Err(String::from("unable to set domain active status"));
+                        return Err(DbError::ClientError);
                     }
                     Ok(_rows_modified) => {
                         return Ok(());
@@ -344,6 +356,100 @@ mod tests {
             ).await {
                 error!("ERROR: {:?}", e);
                 assert!(false);
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+    #[actix_rt::test] 
+    async fn test_add_duplicate() {
+        if let Ok(client) = get_client().await {
+            let domain_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+            let domain_name = format!("domain{}", suffix);
+
+            let domain_slug = format!("domain_slug_{}", suffix);
+
+            let domains = Domains::new(client);
+            if let Err(e) = domains.add(
+                &domain_id,
+                &domain_name,
+                &domain_slug
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            } else {
+                let domain_id_2 = Uuid::new_v4();
+                let domain_name_dup = format!("domain_dup_{}", suffix);
+                let domain_slug_dup = format!("domain_slug_dup_{}", suffix);
+
+                // attempt to add duplicate id
+                if let Err(e) = domains.add(
+                    &domain_id,
+                    &domain_name_dup,
+                    &domain_slug_dup
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert_eq!(DbError::DuplicateKeyError,e);
+                }
+
+                // attempt to add duplicate name
+                if let Err(e) = domains.add(
+                    &domain_id_2,
+                    &domain_name,
+                    &domain_slug_dup
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert_eq!(DbError::DuplicateKeyError,e);
+                }
+
+                // attempt to add duplicate slug
+                if let Err(e) = domains.add(
+                    &domain_id_2,
+                    &domain_name_dup,
+                    &domain_slug
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert_eq!(DbError::DuplicateKeyError,e);
+                }
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+
+    #[actix_rt::test] 
+    async fn test_set_active() {
+        if let Ok(client) = get_client().await {
+            let domain_id = Uuid::new_v4();
+
+            let mut rng = rand::thread_rng();
+            let suffix: u8 = rng.gen();
+            let domain_name = format!("domain{}", suffix);
+
+            let domain_slug = format!("domain_slug_{}", suffix);
+            let active = true;
+
+            let domains = Domains::new(client);
+            if let Err(e) = domains.add(
+                &domain_id,
+                &domain_name,
+                &domain_slug
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
+            } else {
+                if let Err(e) = domains.set_active(
+                    &domain_id, 
+                    &active
+                ).await {
+                    error!("ERROR: {:?}", e);
+                    assert!(false);
+                }
             }
         } else {
             assert!(false);

@@ -24,6 +24,7 @@ use tokio_postgres::NoTls;
 use tokio_postgres::config::{ Config };
 
 
+#[derive(Debug, PartialEq)]
 pub enum DbError {
     ClientError,
     DuplicateKeyError
