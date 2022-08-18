@@ -1,5 +1,6 @@
 use log::{
     info,
+    debug,
     error
 };
 
@@ -89,7 +90,7 @@ impl Domains {
         }
     }
 
-    pub async fn list(
+    pub async fn fetch(
         &self,
         filter: &str,
         items: &i32,
@@ -119,19 +120,15 @@ impl Domains {
                         return Ok(domains);
                     }
                     Ok(rows) => {
-                        for r in rows {
-                            let domain_id: uuid::Uuid = r.get("id");
-                            let active: bool = r.get("active");
-                            let name: String = r.get("name");
-                            let slug: String = r.get("slug");
+                        domains = rows.iter().map(|r| {
 
-                            domains.push(Domain {
-                                id: domain_id,
-                                active: active,
-                                name: name,
-                                slug: slug
-                            });
-                        }
+                            return Domain {
+                                id: r.get("id"),
+                                active: r.get("active"),
+                                name: r.get("name"),
+                                slug: r.get("slug")
+                            };
+                        }).collect();
                     }
                 }
 
@@ -496,6 +493,30 @@ mod tests {
                     error!("ERROR: {:?}", e);
                     assert!(false);
                 }
+            }
+        } else {
+            assert!(false);
+        }
+    }
+
+
+    #[actix_rt::test] 
+    async fn test_domain_list() {
+        // initialize();
+
+        if let Ok(client) = get_client().await {
+            let filter = String::from("%");
+            let items = 10;
+            let page = 0;
+
+            let domains = Domains::new(client);
+            if let Err(e) = domains.list(
+                &filter,
+                &items,
+                &page
+            ).await {
+                error!("ERROR: {:?}", e);
+                assert!(false);
             }
         } else {
             assert!(false);

@@ -1,6 +1,6 @@
 use log::{
     info,
-    // debug,
+    debug,
     error
 };
 
@@ -43,7 +43,7 @@ struct DomainAddRequest {
 
 
 #[derive(Debug, Serialize, Deserialize)]
-struct DomainListRequest {
+struct DomainFetchRequest {
     pub filter: String,
     pub items: i32,
     pub page: i32
@@ -74,10 +74,10 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::post().to(domain_add_post))
         )
         .service(
-            web::resource("list")
+            web::resource("fetch")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
-                .route(web::get().to(domain_list_get))
-                .route(web::post().to(domain_list_post))
+                .route(web::get().to(domain_fetch_get))
+                .route(web::post().to(domain_fetch_post))
         )
         .service(
             web::resource("get")
@@ -166,18 +166,18 @@ async fn domain_add_post(
 }
 
 
-async fn domain_list_get() -> impl Responder {
-    info!("domain_list_get()");
+async fn domain_fetch_get() -> impl Responder {
+    info!("domain_fetch_get()");
     return HttpResponse::Ok().body("use POST /list instead");
 }
 
 
-async fn domain_list_post(
+async fn domain_fetch_post(
     _request: HttpRequest,
     db: web::Data<Db>,
-    params: web::Json<DomainListRequest>
+    params: web::Json<DomainFetchRequest>
 ) -> impl Responder {
-    info!("domain_list_post()");
+    info!("domain_fetch_post()");
 
     match db.pool().get().await {
         Err(e) => {
@@ -186,7 +186,7 @@ async fn domain_list_post(
             return HttpResponse::InternalServerError()
                 .json(ApiResponse {
                     success: false,
-                    message: String::from("// TODO domain list error"),
+                    message: String::from("// TODO domain fetch error"),
                     data: None
                 });
         }
@@ -196,17 +196,17 @@ async fn domain_list_post(
             let page = params.page.clone();
 
             let domains = Domains::new(client);
-            match domains.list(
+            match domains.fetch(
                 &filter,
                 &items,
                 &page
             ).await {
                 Err(e) => {
-                    error!("unable to list domains: {:?}", e);
+                    error!("unable to fetch domains: {:?}", e);
                     return HttpResponse::InternalServerError()
                         .json(ApiResponse {
                             success: false,
-                            message: String::from("// TODO domain list error"),
+                            message: String::from("// TODO domain fetch error"),
                             data: None
                         });
                 }
@@ -214,7 +214,7 @@ async fn domain_list_post(
                     return HttpResponse::Ok()
                         .json(ApiResponse {
                             success: true,
-                            message: String::from("// TODO domain list success"),
+                            message: String::from("// TODO domain fetch success"),
                             data: Some(json!({
                                 "domains": result
                             }))
