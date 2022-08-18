@@ -142,7 +142,7 @@
                     "slug":"test_domain"
                 }
             },
-            "domainListRequest": {
+            "domainFetchRequest": {
                 "type": "object",
                 "required": [
                     "filter",
@@ -331,18 +331,18 @@
                 }
             }
         },
-        "/domain/list": {
-            "summary": "list domains",
+        "/domain/fetch": {
+            "summary": "fetch domains",
             "post": {
-                "summary": "POST method to list domains",
+                "summary": "POST method to fetch domains",
                 "tags": ["domain"],
-                "operationId": "domain_list",
+                "operationId": "domain_fetch",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/domainListRequest"
+                                "$ref": "#/components/schemas/domainFetchRequest"
                             }
                         }
                     }
