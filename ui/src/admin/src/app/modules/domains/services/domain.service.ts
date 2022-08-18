@@ -33,13 +33,13 @@ export class DomainService {
     );
   }
 
-  list(
+  fetch(
     filter: string,
     items: number,
     page: number
   ): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
-      environment.url_base + environment.path_domain_list,
+      environment.url_base + environment.path_domain_fetch,
       {
         filter: filter,
         items: items,

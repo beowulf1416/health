@@ -30,9 +30,11 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr>
+                <tr *ngFor="let domain of domains">
                     <td>
-                        <a title="view" routerLink="/domains/slug/view">slug</a>
+                        <a title="view" routerLink="/domains/slug/view">
+                            {{ domain.name }}
+                        </a>
                     </td>
                     <td>
                         <a title="edit" href="">edit</a>

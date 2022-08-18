@@ -13,7 +13,7 @@ export const environment = {
 
   path_domain_add: '/domain/add',
   path_domain_get: '/domain/get',
-  path_domain_list: '/domain/list',
+  path_domain_fetch: '/domain/fetch',
   path_domain_update: '/domain/update',
   path_domain_set_active: '/domain/set/active',
 

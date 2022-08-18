@@ -20,6 +20,13 @@ export class DomainListComponent implements OnInit {
     filter: new FormControl('')
   });
 
+  domains = Array<{
+    id: string,
+    active: boolean,
+    name: string,
+    slug: string
+  }>();;
+
   constructor(
     private title: TitleService,
     private domain_service: DomainService,
@@ -34,15 +41,24 @@ export class DomainListComponent implements OnInit {
 
   _fetch_domains() {
     const filter_text = this.filter?.value || '';
-    this.domain_service.list(
+    this.domain_service.fetch(
       filter_text + '%',
       10,
       0
     ).subscribe((r: ApiResponse) => {
       if (r.success) {
-        console.log(r);
-      } else {
-        console.error(r);
+        if (r.data?.hasOwnProperty('domains')) {
+          const o: any = r.data;
+          const d: Array<{
+            id: string,
+            active: boolean,
+            name: string,
+            slug: string
+          }> = o?.domains;
+          this.domains = d;
+        } else {
+          this.domains = [];
+        }
       }
     });
   }
@@ -59,15 +75,25 @@ export class DomainListComponent implements OnInit {
     if (!this.is_submitting) {
       this.is_submitting = true;
 
-      this.domain_service.list(
-        this.filter?.value || '',
-        10,
-        0
-      ).subscribe((r: ApiResponse) => {
-        console.log(r);
+      // this.domain_service.list(
+      //   this.filter?.value || '',
+      //   10,
+      //   0
+      // ).subscribe((r: ApiResponse) => {
+      //   // console.log(r);
+      //   if (r.success) {
+      //     if (r.data?.hasOwnProperty('domains')) {
+      //       const o: any = r.data;
+      //       this.domains = o?.domains;
+      //     } else {
+      //       this.domains = [];
+      //     }
+      //   }
+
+      this._fetch_domains();
 
         this.is_submitting = false;
-      });
+      // });
     }
   }
 }
