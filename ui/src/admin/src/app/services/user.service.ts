@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, iif, map, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResponse, newApiResponse } from '../classes/api-response';
 import { User } from '../classes/user';
@@ -92,26 +92,23 @@ export class UserService {
           }
         }
       }),
-      filter((r: HttpResponse<ApiResponse>) => { console.log(r); return r.body?.success === true; }),
+      // filter((r: HttpResponse<ApiResponse>) => { console.log(r); return r.body?.success === true; }),
+      // iif(
+      //   () => r.body?.success, 
+      //     this._get_current_user(),
+      //     of(newApiResponse(
+      //         true,
+      //         'login failed',
+      //         {}
+      //     ))
+      // ),
+      map((r: HttpResponse<ApiResponse>) => r.body),
       switchMap((r: any) => {
-        console.log(r);
-
-        // return this.http.post<ApiResponse>(
-        //   environment.url_base + environment.path_user_current,
-        //   {}
-        // ).pipe(
-        //   filter((r: ApiResponse) => r.success === true),
-        //   tap((r: ApiResponse) => {
-            
-        //     const sz = JSON.stringify(r.data);
-        //     const o = JSON.parse(sz);
-        //     const u = o.user;
-
-        //     this.user_subject.next(new User(u?.email));
-        //   })
-        // );
-
-        return this._get_current_user();
+        if (r.success) {
+          return this._get_current_user();
+        } else {
+          return of(r);
+        }
       })
     );
   }

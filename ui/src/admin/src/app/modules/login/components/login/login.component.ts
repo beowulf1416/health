@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { User } from 'src/app/classes/user';
 import { TitleService } from 'src/app/services/title.service';
 import { UserService } from 'src/app/services/user.service';
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   // user$ = this.user_subject.asObservable();
 
   is_submitting = false;
+  msg_submit = '';
 
   loginForm = new FormGroup({
     email: new FormControl('', [
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
+    console.log("submitting...")
     if (this.loginForm.valid) {
       this.is_submitting = true;
 
@@ -67,9 +69,16 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('email')?.value || '',
         this.loginForm.get('pw')?.value || ''
       ).subscribe(r => {
+        console.log(r);
         if (r.success) {
-          this.router.navigate(['']);
+          console.log('redirecting...');
+          this.msg_submit = 'Successfully authenticated. Redirecting in 3 seconds...';
+          timer(3000).subscribe(r => {
+            this.router.navigate(['']);
+          });
         } else {
+          console.log('failed authentication');
+          this.msg_submit = r.message;
           this.password?.reset();
         }
 

@@ -2,6 +2,11 @@
     <div class="wrapper-form">
         <form class="form-login" [formGroup]="loginForm" (ngSubmit)="submit()">
             <h2>Login</h2>
+            <fieldset *ngIf="msg_submit != ''">
+                <div class="messages">
+                    {{ msg_submit }}
+                </div>
+            </fieldset>
             <fieldset>
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
