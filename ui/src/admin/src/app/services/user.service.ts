@@ -92,16 +92,6 @@ export class UserService {
           }
         }
       }),
-      // filter((r: HttpResponse<ApiResponse>) => { console.log(r); return r.body?.success === true; }),
-      // iif(
-      //   () => r.body?.success, 
-      //     this._get_current_user(),
-      //     of(newApiResponse(
-      //         true,
-      //         'login failed',
-      //         {}
-      //     ))
-      // ),
       map((r: HttpResponse<ApiResponse>) => r.body),
       switchMap((r: any) => {
         if (r.success) {
