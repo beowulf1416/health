@@ -16,7 +16,13 @@ export class DomainListComponent implements OnInit {
 
   is_submitting = false;
 
-  filterForm = new FormGroup({
+  pager = {
+    items: 10,
+    current: 0,
+    max: 10
+  };
+
+  domainsForm = new FormGroup({
     filter: new FormControl('')
   });
 
@@ -43,8 +49,8 @@ export class DomainListComponent implements OnInit {
     const filter_text = this.filter?.value || '';
     this.domain_service.fetch(
       filter_text + '%',
-      10,
-      0
+      this.pager.items,
+      this.pager.current
     ).subscribe((r: ApiResponse) => {
       if (r.success) {
         if (r.data?.hasOwnProperty('domains')) {
@@ -68,32 +74,64 @@ export class DomainListComponent implements OnInit {
   }
 
   get filter() {
-    return this.filterForm.get('filter');
+    return this.domainsForm.get('filter');
   }
 
   submit() {
     if (!this.is_submitting) {
       this.is_submitting = true;
 
-      // this.domain_service.list(
-      //   this.filter?.value || '',
-      //   10,
-      //   0
-      // ).subscribe((r: ApiResponse) => {
-      //   // console.log(r);
-      //   if (r.success) {
-      //     if (r.data?.hasOwnProperty('domains')) {
-      //       const o: any = r.data;
-      //       this.domains = o?.domains;
-      //     } else {
-      //       this.domains = [];
-      //     }
-      //   }
-
       this._fetch_domains();
 
-        this.is_submitting = false;
-      // });
+      this.is_submitting = false;
+    }
+  }
+
+  page_first() {
+    console.log('page_first');
+    this.pager.current = 0;
+
+    this._fetch_domains();
+  }
+
+  page_previous() {
+    console.log('page_previous');
+
+    this.pager.current = this.pager.current - 1;
+    if (this.pager.current < 0){
+      this.pager.current = 0;
+    }
+
+    this._fetch_domains();
+  }
+
+  page_next() {
+    console.log('page_next');
+
+    this.pager.current = this.pager.current + 1;
+    if (this.pager.current > this.pager.max) {
+      this.pager.current = this.pager.max;
+    }
+
+    this._fetch_domains();
+  }
+
+  page_last() {
+    console.log('//TODO page_last');
+
+    this.pager.current = this.pager.max;
+
+    this._fetch_domains();
+  }
+  
+  page_select(e: Event) {
+    console.log('page_select');
+    // console.log(e);
+    // console.log(v);
+
+    if (e?.target) {
+      const value = (e?.target as HTMLSelectElement).value;
+      this.pager.current = parseInt(value);
     }
   }
 }
