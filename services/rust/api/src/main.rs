@@ -45,6 +45,8 @@ async fn main() -> std::io::Result<()> {
             .service(web::scope("/domain").configure(crate::endpoints::domain::config))
             .service(web::scope("/role").configure(crate::endpoints::role::config))
             .service(web::scope("/user").configure(crate::endpoints::user::config))
+
+            .service(web::scope("/patient").configure(crate::endpoints::patient::config))
     })
     .bind("0.0.0.0:8081")?
     .run();

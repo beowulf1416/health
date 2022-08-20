@@ -3,6 +3,8 @@ pub mod domain;
 pub mod role;
 pub mod user;
 
+pub mod patient;
+
 // use log::{
 //     info
 // };
