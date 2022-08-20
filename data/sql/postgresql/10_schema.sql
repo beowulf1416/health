@@ -8,9 +8,15 @@ create extension if not exists pgcrypto;
 \ir iam/tables.sql
 
 
+\ir health/tables.sql
+
+
 
 
 -- procs
 \ir common/procs.sql
 \ir domain/procs.sql
 \ir iam/procs.sql
+
+
+\ir health/procs.sql
