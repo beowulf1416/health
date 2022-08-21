@@ -81,19 +81,19 @@ impl Roles {
     }
 
     
-    pub async fn list(
+    pub async fn fetch(
         &self,
         filter: &str,
         items: &i32,
         page: &i32
     ) -> Result<Vec<Role>, String> {
-        info!("Roles::list()");
+        info!("Roles::fetch()");
 
-        let query = "call iam.role_list($1, $2, $3);";
+        let query = "call iam.role_fetch($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {} {:?}", query, e);
-                return Err(String::from("unable to list roles"));
+                return Err(String::from("unable to fetch roles"));
             }
             Ok(stmt) => {
                 match self.client.query(
@@ -106,7 +106,7 @@ impl Roles {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {} {:?}", query, e);
-                        return Err(String::from("unable to list roles"));
+                        return Err(String::from("unable to fetch roles"));
                     }
                     Ok(rows) => {
                         let mut roles: Vec<Role> = Vec::new();

@@ -56,10 +56,10 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 .route(web::post().to(role_add_post))
         )
         .service(
-            web::resource("list")
+            web::resource("fetch")
                 .route(web::method(http::Method::OPTIONS).to(api_options))
-                .route(web::get().to(role_list_get))
-                .route(web::post().to(role_list_post))
+                .route(web::get().to(role_fetch_get))
+                .route(web::post().to(role_fetch_post))
         )
         .service(
             web::resource("get")
@@ -148,18 +148,18 @@ async fn role_add_post(
 }
 
 
-async fn role_list_get() -> impl Responder {
-    info!("role_list_get()");
-    return HttpResponse::Ok().body("use POST /role/list instead");
+async fn role_fetch_get() -> impl Responder {
+    info!("role_fetch_get()");
+    return HttpResponse::Ok().body("use POST /role/fetch instead");
 }
 
 
-async fn role_list_post(
+async fn role_fetch_post(
     _request: HttpRequest,
     db: web::Data<Db>,
     params: web::Json<FilterRequest>
 ) -> impl Responder {
-    info!("role_list_post()");
+    info!("role_fetch_post()");
     
     match db.pool().get().await {
         Err(e) => {
@@ -167,7 +167,7 @@ async fn role_list_post(
             return HttpResponse::InternalServerError()
                 .json(ApiResponse {
                     success: false,
-                    message: String::from("// TODO role_list_post error"),
+                    message: String::from("// TODO role_fetch_post error"),
                     data: None
                 });
         }
@@ -177,17 +177,17 @@ async fn role_list_post(
             let page = params.page.clone();
 
             let roles = Roles::new(client);
-            match roles.list(
+            match roles.fetch(
                 &filter,
                 &items,
                 &page
             ).await {
                 Err(e) => {
-                    error!("unable to list roles: {:?}", e);
+                    error!("unable to fetch roles: {:?}", e);
                     return HttpResponse::InternalServerError()
                         .json(ApiResponse {
                             success: false,
-                            message: String::from("// TODO role_list_post error"),
+                            message: String::from("// TODO role_fetch_post error"),
                             data: None
                         });
                 }
@@ -195,7 +195,7 @@ async fn role_list_post(
                     return HttpResponse::Ok()
                         .json(ApiResponse {
                             success: true,
-                            message: String::from("// TODO role_list_post success"),
+                            message: String::from("// TODO role_fetch_post success"),
                             data: Some(json!({
                                 "roles": roles
                             }))

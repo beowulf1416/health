@@ -1,4 +1,4 @@
-create or replace function user_list(
+create or replace function user_fetch(
     p_filter varchar(100),
     p_items int default 10,
     p_page int default 0

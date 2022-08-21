@@ -1,4 +1,4 @@
-create or replace procedure patient_fetch(
+create or replace function patient_fetch(
     p_domain_id domain.domains.id%type,
     p_filter varchar(100),
     p_items int default 10,

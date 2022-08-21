@@ -98,7 +98,7 @@ impl Domains {
     ) -> Result<Vec<Domain>, String> {
         info!("Domains::list()");
 
-        let query = "select * from domain.domain_list($1, $2, $3);";
+        let query = "select * from domain.domain_fetch($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
@@ -501,7 +501,7 @@ mod tests {
 
 
     #[actix_rt::test] 
-    async fn test_domain_list() {
+    async fn test_domain_fetch() {
         // initialize();
 
         if let Ok(client) = get_client().await {
@@ -510,7 +510,7 @@ mod tests {
             let page = 0;
 
             let domains = Domains::new(client);
-            if let Err(e) = domains.list(
+            if let Err(e) = domains.fetch(
                 &filter,
                 &items,
                 &page

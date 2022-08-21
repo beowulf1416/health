@@ -203,17 +203,17 @@ impl Users {
     }
 
 
-    pub async fn list(
+    pub async fn fetch(
         &self,
         filter: &str,
         items: &i32,
         page: &i32
     ) -> Result<Vec<User>, String> {
-        let query = "select * from iam.user_list($1, $2, $3);";
+        let query = "select * from iam.user_fetch($1, $2, $3);";
         match self.client.prepare_cached(query).await {
             Err(e) => {
                 error!("unable to prepare statement: {:?}", e);
-                return Err(String::from("unable to list users"));
+                return Err(String::from("unable to fetch users"));
             }
             Ok(stmt) => {
                 match self.client.query(
@@ -226,7 +226,7 @@ impl Users {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {:?}", e);
-                        return Err(String::from("unable to retrieve list of users"));
+                        return Err(String::from("unable to retrieve fetch of users"));
                     }
                     Ok(rows) => {
                         let mut users: Vec<User> = Vec::new();
@@ -277,7 +277,7 @@ impl Users {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {:?}", e);
-                        return Err(String::from("unable to retrieve list of users"));
+                        return Err(String::from("unable to retrieve user"));
                     }
                     Ok(r) => {
                         let id: uuid::Uuid = r.get("id");
@@ -324,7 +324,7 @@ impl Users {
                 ).await {
                     Err(e) => {
                         error!("an error occured while executing the statement: {:?}", e);
-                        return Err(String::from("unable to retrieve list of users"));
+                        return Err(String::from("unable to retrieve user"));
                     }
                     Ok(r) => {
                         let id: uuid::Uuid = r.get("id");
