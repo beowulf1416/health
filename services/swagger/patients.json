@@ -1,0 +1,97 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "openapi document",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8081",
+            "description": "local api server"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "apiResponse": {
+                "type": "object",
+                "required": [
+                    "success",
+                    "message"
+                ],
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "readOnly": true
+                    }
+                }
+            },
+            "patientAddRequest": {
+                "type":"object",
+                "required": [
+                    "id",
+                    "email",
+                    "given_name",
+                    "family_name",
+                    "prefix",
+                    "suffix"
+                ],
+                "properties":{
+                    "id": {
+                        "type":"string",
+                        "format":"uuid",
+                        "readOnly":true
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Bearer authentication",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "paths": {
+        "/patient/add": {
+            "summary": "add a patient",
+            "post": {
+                "summary": "POST method add a patient",
+                "tags": ["patient"],
+                "operationId": "patient_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/patientAddRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "domain added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
