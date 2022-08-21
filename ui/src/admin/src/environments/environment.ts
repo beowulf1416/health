@@ -18,7 +18,7 @@ export const environment = {
   path_domain_set_active: '/domain/set/active',
 
   path_user_add: '/user/add',
-  path_user_list: '/user/list',
+  path_user_fetch: '/user/fetch',
   path_user_get: '/user/get',
   path_user_set_active: '/user/set/active',
   path_user_set_password: '/user/set/password',

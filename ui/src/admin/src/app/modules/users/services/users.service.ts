@@ -38,13 +38,13 @@ export class UsersService {
     );
   }
 
-  list(
+  fetch(
     filter: string,
     items: number,
     page: number
   ): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
-      environment.url_base + environment.path_user_list,
+      environment.url_base + environment.path_user_fetch,
       {
         filter: filter,
         items: items,

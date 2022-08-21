@@ -31,7 +31,7 @@ export class DomainListComponent implements OnInit {
     active: boolean,
     name: string,
     slug: string
-  }>();;
+  }>();
 
   constructor(
     private title: TitleService,
@@ -132,6 +132,8 @@ export class DomainListComponent implements OnInit {
     if (e?.target) {
       const value = (e?.target as HTMLSelectElement).value;
       this.pager.current = parseInt(value);
+
+      this._fetch_domains();
     }
   }
 }
