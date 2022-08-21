@@ -68,7 +68,7 @@
                     "given_name": "test-role"
                 }
             },
-            "roleListRequest": {
+            "roleFetchRequest": {
                 "type": "object",
                 "required":[
                     "filter",
@@ -190,25 +190,25 @@
                 }
             }
         },
-        "/role/list": {
-            "summary": "list roles",
+        "/role/fetch": {
+            "summary": "fetch roles",
             "post": {
-                "summary": "POST method list roles",
+                "summary": "POST method fetch roles",
                 "tags": ["role"],
-                "operationId": "role_list",
+                "operationId": "role_fetch",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/roleListRequest"
+                                "$ref": "#/components/schemas/roleFetchRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "list users",
+                        "description": "fetch roles",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -238,7 +238,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "list users",
+                        "description": "retrieve user",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -268,7 +268,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "list users",
+                        "description": "retrieve user",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -298,7 +298,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "list users",
+                        "description": "set role active status",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -328,7 +328,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "list users",
+                        "description": "update role",
                         "content": {
                             "application/json": {
                                 "schema": {
