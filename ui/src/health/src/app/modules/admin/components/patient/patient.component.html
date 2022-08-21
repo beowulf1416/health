@@ -1,1 +1,19 @@
-<p>patient works!</p>
+<div class="wrapper-component">
+    <div class="wrapper-form">
+        <form class="form-patient" [formGroup]="patientForm">
+            <fieldset class="actions">
+                <div class="wrapper-toolbar">
+                    <mat-toolbar>
+                        <h1>Patient</h1>
+                        <nav>
+                            <button mat-raised-button color="primary" [disabled]="patientForm.invalid"  >Save</button>
+                        </nav>
+                    </mat-toolbar>
+                </div><!-- .wrapper-toolbar -->
+            </fieldset>
+            <fieldset>
+
+            </fieldset>
+        </form>
+    </div><!-- .wrapper-form -->
+</div><!-- .wrapper-component -->

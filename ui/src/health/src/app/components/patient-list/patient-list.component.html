@@ -1,1 +1,21 @@
-<p>patient-list works!</p>
+<div class="wrapper-component">
+    <div class="wrapper-form">
+        <form class="form-patients" [formGroup]="patientsForm">
+            <fieldset class="actions">
+                <div class="wrapper-toolbar">
+                    <mat-toolbar>
+                        <h1>Patients</h1>
+                        <nav>
+                            <a title="New Patient" routerLink="/patient/add" mat-flat-button>New</a>
+                        </nav>
+                    </mat-toolbar>
+                </div><!-- .wrapper-toolbar -->
+            </fieldset>
+            <fieldset>
+                <div class="wrapper-table">
+
+                </div><!-- .wrapper-table -->
+            </fieldset>
+        </form>
+    </div><!-- .wrapper-form -->
+</div><!-- .wrapper-component -->

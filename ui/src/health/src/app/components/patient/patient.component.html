@@ -1,3 +1,21 @@
+<div class="wrapper-component">
+    <div class="wrapper-form">
+        <form class="form-patient" [formGroup]="patientForm">
+            <fieldset class="actions">
+                <mat-toolbar>
+                    <h1>Patient</h1>
+                    <nav>
+                        <button mat-raised-button color="primary" [disabled]="patientForm.invalid"  >Save</button>
+                    </nav>
+                </mat-toolbar>
+            </fieldset>
+            <fieldset>
+
+            </fieldset>
+        </form>
+    </div><!-- .wrapper-form -->
+</div><!-- .wrapper-component -->
+
 <div class="wrapper-patient">
     <h2>Patient Profile</h2>
     <main itemscope itemtype="https://schema.org/Person">

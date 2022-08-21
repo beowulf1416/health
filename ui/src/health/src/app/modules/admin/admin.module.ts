@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/material.module';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminHomeComponent } from './components/admin-home/admin-home.component';
@@ -19,6 +21,8 @@ import { PatientComponent } from './components/patient/patient.component';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
     AdminRoutingModule
   ]
 })

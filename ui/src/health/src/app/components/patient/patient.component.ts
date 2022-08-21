@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { TitleService } from 'src/app/services/title.service';
 
 @Component({
@@ -7,6 +8,8 @@ import { TitleService } from 'src/app/services/title.service';
   styleUrls: ['./patient.component.css']
 })
 export class PatientComponent implements OnInit {
+
+  patientForm = new FormGroup({});
 
   patient = {
     givenName: 'not set',
