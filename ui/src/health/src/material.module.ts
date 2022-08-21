@@ -1,5 +1,7 @@
 import {NgModule} from '@angular/core';
 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -8,9 +10,13 @@ import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
     exports: [
+        MatFormFieldModule,
+        MatInputModule,
         MatButtonModule,
         MatIconModule,
         MatToolbarModule,
@@ -18,7 +24,9 @@ import {MatBadgeModule} from '@angular/material/badge';
         MatListModule,
         MatExpansionModule,
         MatMenuModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatSlideToggleModule,
+        MatPaginatorModule
     ]
 })
 export class MaterialModule {}

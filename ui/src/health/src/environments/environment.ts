@@ -8,7 +8,9 @@ export const environment = {
   key_session_token: 'token',
 
   url_base: 'http://localhost:4200',
-  url_authenticate: '/api/user/authenticate'
+
+  path_authenticate: '/user/authenticate',
+  path_user_current: '/user/current'
 };
 
 /*
