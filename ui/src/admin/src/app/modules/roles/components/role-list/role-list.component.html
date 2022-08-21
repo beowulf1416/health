@@ -1,28 +1,59 @@
 <div class="component-role-list">
-    <table>
-        <caption>Roles</caption>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr>
-                <td>
-                    <a title="view" routerLink="/role/slug/view">slug</a>
-                </td>
-                <td>
-                    <a title="edit" href="">edit</a>
-                    <a title="toggle" href="">toggle</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="wrapper-form">
+        <form class="form-roles" [formGroup]="rolesForm">
+            <fieldset>
+                <div class="wrapper-tbl">
+                    <table>
+                        <caption>Roles</caption>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Name</mat-label>
+                                        <input type="text" id="filter" name="filter" class="field-filter" matInput formControlName="filter" />
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr *ngFor="let r of roles">
+                                <td>
+                                    {{ r.name }}
+                                </td>
+                                <td>
+                                    <a title="edit" href="">edit</a>
+                                    <a title="toggle" href="">toggle</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- .wrapper-tbl -->
+            </fieldset>
+            <fieldset>
+                <div class="actions-tbl">
+                    <span>
+                        <button type="button" (click)="page_first()" [disabled]="pager.current == 0">&lt;&lt;</button>
+                        <button type="button" (click)="page_previous()" [disabled]="pager.current == 0">&lt;</button>
+                        <select id="pager" class="field-pager" name="pager" (change)="page_select($event)">
+                            <option *ngFor="let item of [].constructor(pager.max); let i = index" 
+                                [value]="i" [selected]="pager.current == i">{{ i + 1 }}
+                            </option>
+                        </select>
+                        <button type="button" (click)="page_next()" [disabled]="pager.current == this.pager.max - 1">&gt;</button>
+                        <button type="button" (click)="page_last()" [disabled]="pager.current == this.pager.max - 1">&gt;&gt;</button>
+                    </span>
+                </div><!-- .actions-tbl -->
+            </fieldset>
+        </form>
+    </div><!-- .wrapper-form -->
 </div><!-- .component-role-list -->

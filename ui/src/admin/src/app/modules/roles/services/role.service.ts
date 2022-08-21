@@ -13,7 +13,8 @@ import {v4 as uuidv4} from 'uuid';
 export class RoleService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private roles_service: RoleService
   ) { }
 
   add(
@@ -34,13 +35,13 @@ export class RoleService {
     );
   }
 
-  list(
+  fetch(
     filter: string,
     items: number,
     page: number
   ): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
-      environment.url_base + environment.path_role_list,
+      environment.url_base + environment.path_role_fetch,
       {
         filter: filter,
         items: items,

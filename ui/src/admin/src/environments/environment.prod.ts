@@ -21,7 +21,7 @@ export const environment = {
 
   path_role_add: '/role/add',
   path_role_get: '/role/get',
-  path_role_list: '/role/list',
+  path_role_fetch: '/role/fetch',
   path_role_update: '/role/update',
   path_role_set_active: '/role/set/active'
 };
