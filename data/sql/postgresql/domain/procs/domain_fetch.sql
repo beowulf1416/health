@@ -1,4 +1,4 @@
-create or replace function domain_list (
+create or replace function domain_fetch (
     p_filter domain.domains.name%type default '',
     p_items int default 10,
     p_page int default 0
