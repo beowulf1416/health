@@ -1,9 +1,12 @@
-<nav>
-    <ul>
-        <li><a title="Add Domain" routerLink="add">Add</a></li>
-    </ul>
-</nav>
 <div class="component-domain-list">
+    <div class="wrapper-toolbar">
+        <mat-toolbar>
+            <h1>Domains</h1>
+            <nav>
+                <a title="Add Domain" routerLink="add" mat-flat-button>New</a>
+            </nav>
+        </mat-toolbar>
+    </div><!-- .wrapper-toolbar -->
     <div class="wrapper-tbl">
         <form class="form-domains" [formGroup]="domainsForm">
             <fieldset>

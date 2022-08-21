@@ -1,6 +1,16 @@
 <div class="component-domain">
     <div class="wrapper-form">
         <form class="form-domain" [formGroup]="domainForm" (ngSubmit)="submit()">
+            <fieldset class="actions">
+                <div class="wrapper-toolbar">
+                    <mat-toolbar>
+                        <h1>Domain</h1>
+                        <nav>
+                            <button mat-raised-button color="primary" [disabled]="domainForm.invalid"  >Save</button>
+                        </nav>
+                    </mat-toolbar>
+                </div><!-- .wrapper-toolbar -->
+            </fieldset>
             <fieldset>
                 <legend>Information</legend>
                 <mat-form-field appearance="outline" class=".form-field-block">

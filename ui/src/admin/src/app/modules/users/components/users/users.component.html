@@ -1,6 +1,16 @@
 <div class="component-user">
     <div class="wrapper-form">
         <form id="form-user" [formGroup]="userForm" (ngSubmit)="submit()">
+            <fieldset class="actions">
+                <div class="wrapper-toolbar">
+                    <mat-toolbar>
+                        <h1>User</h1>
+                        <nav>
+                            <button mat-raised-button color="primary" [disabled]="userForm.invalid"  >Save</button>
+                        </nav>
+                    </mat-toolbar>
+                </div><!-- .wrapper-toolbar -->
+            </fieldset>
             <fieldset>
                 <legend>Required Information</legend>
 

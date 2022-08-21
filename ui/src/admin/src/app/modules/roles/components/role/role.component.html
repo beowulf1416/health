@@ -1,6 +1,16 @@
 <div class="component-role">
     <div class="wrapper-form">
         <form class="form-role" [formGroup]="roleForm" (ngSubmit)="submit()">
+            <fieldset class="actions">
+                <div class="wrapper-toolbar">
+                    <mat-toolbar>
+                        <h1>Role</h1>
+                        <nav>
+                            <button mat-raised-button color="primary" [disabled]="roleForm.invalid"  >Save</button>
+                        </nav>
+                    </mat-toolbar>
+                </div><!-- .wrapper-toolbar -->
+            </fieldset>
             <fieldset>
                 <legend>Information</legend>
 

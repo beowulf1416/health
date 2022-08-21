@@ -1,4 +1,12 @@
 <div class="component-role-list">
+    <div class="wrapper-toolbar">
+        <mat-toolbar>
+            <h1>Roles</h1>
+            <nav>
+                <a title="New Role" routerLink="/roles/add" mat-flat-button>New</a>
+            </nav>
+        </mat-toolbar>
+    </div><!-- .wrapper-toolbar -->
     <div class="wrapper-form">
         <form class="form-roles" [formGroup]="rolesForm">
             <fieldset>

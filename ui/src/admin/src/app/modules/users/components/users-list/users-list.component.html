@@ -1,9 +1,12 @@
-<nav>
-    <ul>
-        <li><a title="Add User" routerLink="add">Add</a></li>
-    </ul>
-</nav>
 <div class="component-user-list">
+    <div class="wrapper-toolbar">
+        <mat-toolbar>
+            <h1>Users</h1>
+            <nav>
+                <a title="Add User" routerLink="/users/add" mat-flat-button>New</a>
+            </nav>
+        </mat-toolbar>
+    </div><!-- .wrapper-toolbar -->
     <div class="wrapper-form">
         <form class="form-users" [formGroup]="usersForm">
             <fieldset>
