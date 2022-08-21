@@ -13,8 +13,7 @@ import {v4 as uuidv4} from 'uuid';
 export class RoleService {
 
   constructor(
-    private http: HttpClient,
-    private roles_service: RoleService
+    private http: HttpClient
   ) { }
 
   add(
