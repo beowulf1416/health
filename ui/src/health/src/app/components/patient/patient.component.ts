@@ -109,4 +109,20 @@ export class PatientComponent implements OnInit {
   get certification_date() {
     return this.patientForm.get('certification_date');
   }
+
+  get ss_id() {
+    return this.patientForm.get('ss_id');
+  }
+
+  get medicare_id() {
+    return this.patientForm.get('medicare_id');
+  }
+
+  get medicaid_id() {
+    return this.patientForm.get('medicaid_id');
+  }
+
+  get cbsa_id() {
+    return this.patientForm.get('cbsa_id');
+  }
 }

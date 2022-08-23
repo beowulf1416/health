@@ -198,13 +198,61 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" >
-                    <mat-label>Discharget Date</mat-label>
-                    <input type="date" id="discharge_date" name="ceritification_date" class="field-ceritification-date" required matInput formControlName="ceritification_date" />
+                    <mat-label>Discharge Date</mat-label>
+                    <input type="date" id="discharge_date" name="discharge_date" class="field-discharge-date" required matInput formControlName="discharge_date" />
                     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                    <mat-hint>Please enter certification date</mat-hint>
-                    <div class="field-errors" *ngIf="ceritification_date?.touched || ceritification_date?.dirty">
-                        <mat-error *ngIf="ceritification_date?.hasError('required')">
-                            Please enter certification date
+                    <mat-hint>Please enter discharge date</mat-hint>
+                    <div class="field-errors" *ngIf="discharge_date?.touched || discharge_date?.dirty">
+                        <mat-error *ngIf="discharge_date?.hasError('required')">
+                            Please enter discharge date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>SS#</mat-label>
+                    <input type="text" id="ss_id" name="ss_id" class="field-ss-id" required matInput formControlName="ss_id" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter SS#</mat-hint>
+                    <div class="field-errors" *ngIf="ss_id?.touched || ss_id?.dirty">
+                        <mat-error *ngIf="ss_id?.hasError('required')">
+                            Please enter SS number
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Medicare#</mat-label>
+                    <input type="text" id="medicare_id" name="medicare_id" class="field-medicare-id" required matInput formControlName="medicare_id" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter Medicare#</mat-hint>
+                    <div class="field-errors" *ngIf="medicare_id?.touched || medicare_id?.dirty">
+                        <mat-error *ngIf="medicare_id?.hasError('required')">
+                            Please enter Medicare number
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>MedicAID#</mat-label>
+                    <input type="text" id="medicaid_id" name="medicaid_id" class="field-medicaid-id" required matInput formControlName="medicaid_id" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter Medicaid#</mat-hint>
+                    <div class="field-errors" *ngIf="medicaid_id?.touched || medicaid_id?.dirty">
+                        <mat-error *ngIf="medicaid_id?.hasError('required')">
+                            Please enter MedicAID number
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>CBSA#</mat-label>
+                    <input type="text" id="cbsa_id" name="cbsa_id" class="field-cbsa-id" required matInput formControlName="cbsa_id" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter CBSA#</mat-hint>
+                    <div class="field-errors" *ngIf="cbsa_id?.touched || cbsa_id?.dirty">
+                        <mat-error *ngIf="cbsa_id?.hasError('required')">
+                            Please enter CBSA number
                         </mat-error>
                     </div><!-- .field-errors -->
                 </mat-form-field>
