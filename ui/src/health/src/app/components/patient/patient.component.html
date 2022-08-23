@@ -10,7 +10,204 @@
                 </mat-toolbar>
             </fieldset>
             <fieldset>
+                <mat-form-field appearance="outline" >
+                    <mat-label>Family Name</mat-label>
+                    <input type="text" id="fn" name="fn" class="field-family-name" required matInput formControlName="family_name" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter family name</mat-hint>
+                    <div class="field-errors" *ngIf="family_name?.touched || family_name?.dirty">
+                        <mat-error *ngIf="family_name?.hasError('required')">
+                            Please enter family name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
 
+                <mat-form-field appearance="outline" >
+                    <mat-label>Given Name</mat-label>
+                    <input type="text" id="gn" name="gn" class="field-given-name" required matInput formControlName="given_name" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter family name</mat-hint>
+                    <div class="field-errors" *ngIf="given_name?.touched || given_name?.dirty">
+                        <mat-error *ngIf="given_name?.hasError('required')">
+                            Please enter family name
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Address</mat-label>
+                    <input type="text" id="contact_address" name="contact_address" class="field-address" required matInput formControlName="address" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter address</mat-hint>
+                    <div class="field-errors" *ngIf="address?.touched || address?.dirty">
+                        <mat-error *ngIf="address?.hasError('required')">
+                            Please enter address
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Phone Number</mat-label>
+                    <input type="tel" id="contact_no" name="contact_no" class="field-contact-no" required matInput formControlName="contact_no" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter contact number</mat-hint>
+                    <div class="field-errors" *ngIf="contact_no?.touched || contact_no?.dirty">
+                        <mat-error *ngIf="contact_no?.hasError('required')">
+                            Please enter contact number
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Birthdate</mat-label>
+                    <input type="date" id="birth_date" name="birth_date" class="field-birth-date" required matInput formControlName="birth_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter birth date</mat-hint>
+                    <div class="field-errors" *ngIf="birth_date?.touched || birth_date?.dirty">
+                        <mat-error *ngIf="birth_date?.hasError('required')">
+                            Please enter birth date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Gender</mat-label>
+                    <mat-select id="gender" name="gender" formControlName="gender">
+                        <mat-option value="male">Male</mat-option>
+                        <mat-option value="female">Female</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please select gender</mat-hint>
+                    <div class="field-errors" *ngIf="gender?.touched || gender?.dirty">
+                        <mat-error *ngIf="gender?.hasError('required')">
+                            Please select gender
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Marital Status</mat-label>
+                    <mat-select id="marital_status" name="marital_status" formControlName="marital_status">
+                        <mat-option value="single">Single</mat-option>
+                        <mat-option value="married">Married</mat-option>
+                        <mat-option value="widowed">Widowed</mat-option>
+                        <mat-option value="separated">Separated</mat-option>
+                        <mat-option value="divorced">Divorced</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please select marital status</mat-hint>
+                    <div class="field-errors" *ngIf="marital_status?.touched || marital_status?.dirty">
+                        <mat-error *ngIf="marital_status?.hasError('required')">
+                            Please select marital status
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Ethnicity</mat-label>
+                    <mat-select id="ethnicity" name="ethnicity" formControlName="ethnicity">
+                        <mat-option value="caucasian">Caucasian</mat-option>
+                        <mat-option value="asian">Asian</mat-option>
+                        <mat-option value="european">European</mat-option>
+                        <mat-option value="african">African</mat-option>
+                        <mat-option value="indian">Indian</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter birth date</mat-hint>
+                    <div class="field-errors" *ngIf="ethnicity?.touched || ethnicity?.dirty">
+                        <mat-error *ngIf="ethnicity?.hasError('required')">
+                            Please select ethnicity
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Admission Source</mat-label>
+                    <mat-select id="admission_source" name="admission_source" formControlName="admission_source">
+                        <mat-option value="clinic_referral">Clinic Referral</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter birth date</mat-hint>
+                    <div class="field-errors" *ngIf="admission_source?.touched || admission_source?.dirty">
+                        <mat-error *ngIf="admission_source?.hasError('required')">
+                            Please select Admission Source
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Admission Date</mat-label>
+                    <input type="date" id="admission_date" name="admission_date" class="field-admission-date" required matInput formControlName="admission_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter admission date</mat-hint>
+                    <div class="field-errors" *ngIf="admission_date?.touched || admission_date?.dirty">
+                        <mat-error *ngIf="admission_date?.hasError('required')">
+                            Please enter admission date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Face-to-Face Date</mat-label>
+                    <input type="date" id="face_to_face_date" name="face_to_face_date" class="field-face-to-face-date" required matInput formControlName="face_to_face_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter face-to-face date</mat-hint>
+                    <div class="field-errors" *ngIf="face_to_face_date?.touched || face_to_face_date?.dirty">
+                        <mat-error *ngIf="face_to_face_date?.hasError('required')">
+                            Please enter face-to-face date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>SOC Date</mat-label>
+                    <input type="date" id="soc_date" name="soc_date" class="field-soc-date" required matInput formControlName="soc_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter SOC date</mat-hint>
+                    <div class="field-errors" *ngIf="soc_date?.touched || soc_date?.dirty">
+                        <mat-error *ngIf="soc_date?.hasError('required')">
+                            Please enter SOC date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Current Episode</mat-label>
+                    <mat-select id="current_episode" name="current_episode" formControlName="current_episode">
+                        <mat-option value="recertification">Recertification</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter current episode</mat-hint>
+                    <div class="field-errors" *ngIf="current_episode?.touched || current_episode?.dirty">
+                        <mat-error *ngIf="current_episode?.hasError('required')">
+                            Please select current episode
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Certification</mat-label>
+                    <input type="date" id="certification_date" name="certification_date" class="field-certification-date" required matInput formControlName="certification_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter certification date</mat-hint>
+                    <div class="field-errors" *ngIf="certification_date?.touched || certification_date?.dirty">
+                        <mat-error *ngIf="certification_date?.hasError('required')">
+                            Please enter certification date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Discharget Date</mat-label>
+                    <input type="date" id="discharge_date" name="ceritification_date" class="field-ceritification-date" required matInput formControlName="ceritification_date" />
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Please enter certification date</mat-hint>
+                    <div class="field-errors" *ngIf="ceritification_date?.touched || ceritification_date?.dirty">
+                        <mat-error *ngIf="ceritification_date?.hasError('required')">
+                            Please enter certification date
+                        </mat-error>
+                    </div><!-- .field-errors -->
+                </mat-form-field>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->
