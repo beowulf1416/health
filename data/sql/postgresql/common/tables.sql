@@ -32,7 +32,9 @@ create domain slug_text
 -- tables
 \ir tables/countries.sql
 \ir tables/currencies.sql
-
+\ir tables/genders.sql
+\ir tables/ethnicity.sql
+\ir tables/marital_states.sql
 
 
 -- procs
