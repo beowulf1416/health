@@ -9,3 +9,5 @@ set schema 'health';
 \ir tables/emergency_contacts.sql
 \ir tables/patient_info.sql
 \ir tables/patients.sql
+\ir tables/patient_allergies.sql
+\ir tables/patient_visits.sql
