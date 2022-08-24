@@ -1,6 +1,6 @@
 <div class="wrapper-component">
     <div class="wrapper-form">
-        <form class="form-patient" [formGroup]="patientForm">
+        <form class="form-patient" [formGroup]="patientForm" (ngSubmit)="submit()">
             <fieldset class="actions">
                 <mat-toolbar>
                     <h1>Patient</h1>
@@ -256,6 +256,13 @@
                         </mat-error>
                     </div><!-- .field-errors -->
                 </mat-form-field>
+
+                <mat-slide-toggle
+                    class="field-release-info"
+                    [color]="primary"
+                    formControlName="release_of_info">
+                    Release of Information
+                </mat-slide-toggle>
             </fieldset>
         </form>
     </div><!-- .wrapper-form -->

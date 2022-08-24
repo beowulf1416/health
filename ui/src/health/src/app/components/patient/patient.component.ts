@@ -125,4 +125,8 @@ export class PatientComponent implements OnInit {
   get cbsa_id() {
     return this.patientForm.get('cbsa_id');
   }
+
+  submit() {
+    console.log('PatientComponent::submit()');
+  } 
 }
